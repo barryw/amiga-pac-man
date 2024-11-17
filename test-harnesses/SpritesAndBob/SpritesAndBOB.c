@@ -6,46 +6,41 @@
  * @license GPL v. 3, see LICENSE for details.
  */
 
-#include <exec/types.h>
-#include <exec/nodes.h>
-#include <exec/lists.h>
-#include <exec/memory.h>
-#include <exec/interrupts.h>
-#include <exec/ports.h>
-#include <exec/libraries.h>
-#include <exec/tasks.h>
-#include <exec/io.h>
-#include <exec/devices.h>
+#include <clib/alib_protos.h>
+#include <clib/dos_protos.h>
+#include <clib/exec_protos.h>
+#include <clib/graphics_protos.h>
+#include <clib/intuition_protos.h>
 #include <devices/timer.h>
+#include <exec/lists.h>
+#include <exec/nodes.h>
+#include <exec/ports.h>
+#include <exec/tasks.h>
+#include <exec/types.h>
+#include <graphics/gels.h>
 #include <graphics/gfx.h>
 #include <graphics/gfxbase.h>
-#include <graphics/gels.h>
 #include <graphics/sprite.h>
 #include <intuition/intuition.h>
 
-#include "font.h"
-#include "MazeBorders.h"
-#include "sprites.h"
 #include "bobs.h"
+#include "sprites.h"
+#include "../font.h"
+#include "../MazeBorders.h"
 
 struct GfxBase *GfxBase;
 struct IntuitionBase *IntuitionBase;
 
-extern struct MsgPort *CreatePort();
-extern struct IORequest *CreateExtIO();
-extern struct Task *CreateTask();
 
 /** The Test Harness *******************************************************/
 
-struct Screen *OpenScreen();
-struct Window *OpenWindow();
 
 struct Task *clydeTask, *blinkyTask, *pinkyTask, *inkyTask, *paccyTask;
 
 struct Screen *sPacMan;
 struct Window *wPacMan;
 
-struct NewScreen nsPacMan = 
+struct NewScreen nsPacMan =
 {
 	0, 0,
 	320, 200, 4,
@@ -57,19 +52,19 @@ struct NewScreen nsPacMan =
 	NULL
 };
 
-struct NewWindow nwPacMan = 
+struct NewWindow nwPacMan =
 {
 	0, 0,
 	320, 200,
 	0, 1,
 	NULL,
-	BORDERLESS|BACKDROP,
+	BORDERLESS | BACKDROP,
 	NULL,
 	NULL,
 	"PAC-MAN(tm)",
 	NULL,
 	NULL,
-	320,200,320,200,
+	320, 200, 320, 200,
 	CUSTOMSCREEN
 };
 
@@ -80,24 +75,24 @@ struct TextAttr taFont = {
 	FPF_DESIGNED
 };
 
-USHORT colorTable[16] = 
+USHORT colorTable[16] =
 {
-	0x000,		/* 0: Black */
-	0xFF0,		/* 1: Yellow */
-	0xF00,		/* 2: Light Red */
-	0xFFF,		/* 3: White */
-	0x00F,		/* 4: Light Blue */
-	0xF0F,		/* 5: Light Magenta */
-	0x0FF,		/* 6: Light Cyan */
-	0xFA0,		/* 7: Dark Yellow (pale orange?) */
-	0x00F,		/* 8: Light Green */
-	0xFA0,		/* 9: Light Orange */
-	0xFEF,		/* A: Pinky white */
-	0xFCB,		/* B: Power Pellet */
-	0x0FF,		/* C: Light Cyan */
-	0xF00,		/* D: Light Red */
-	0xF0F,		/* E: Light Magenta */
-	0xFFF,		/* F: White */
+	0x000, /* 0: Black */
+	0xFF0, /* 1: Yellow */
+	0xF00, /* 2: Light Red */
+	0xFFF, /* 3: White */
+	0x00F, /* 4: Light Blue */
+	0xF0F, /* 5: Light Magenta */
+	0x0FF, /* 6: Light Cyan */
+	0xFA0, /* 7: Dark Yellow (pale orange?) */
+	0x00F, /* 8: Light Green */
+	0xFA0, /* 9: Light Orange */
+	0xFEF, /* A: Pinky white */
+	0xFCB, /* B: Power Pellet */
+	0x0FF, /* C: Light Cyan */
+	0xF00, /* D: Light Red */
+	0xF0F, /* E: Light Magenta */
+	0xFFF, /* F: White */
 };
 
 struct SimpleSprite blinkySprite, pinkySprite, inkySprite, paccySprite;
@@ -110,49 +105,47 @@ struct VSprite dummySpriteA, dummySpriteB;
 
 WORD clydeSaveBuf[512];
 
-int globalX=0;
+int globalX = 0;
 
-PaccyTask()
-{
-	SHORT paccy_spr;
-
-	int k, bx=0, by=84, i=0, frame=0;
+void PaccyTask() {
+	const int bx = 0;
+	const int by = 84;
+	int i = 0, frame = 0;
 
 	paccySprite.posctldata = paccy_right_0;
 	paccySprite.height = 16;
 	paccySprite.x = bx;
 	paccySprite.y = by;
 
-	paccy_spr = GetSprite(&paccySprite, 1);
+	SHORT paccy_spr = GetSprite(&paccySprite, 1);
 
-	k = ((paccy_spr & 0x06) * 2) + 16;
-	
-	SetRGB4(&sPacMan->ViewPort, k+1, 0x0F, 0x0F, 0x00);
-	SetRGB4(&sPacMan->ViewPort, k+2, 0x0F, 0x0F, 0x00);
-	SetRGB4(&sPacMan->ViewPort, k+3, 0x0F, 0x0F, 0x00);
+	int k = (paccy_spr & 0x06) * 2 + 16;
 
-	for (i=0;i<240;i++)
-	{
+	SetRGB4(&sPacMan->ViewPort, k + 1, 0x0F, 0x0F, 0x00);
+	SetRGB4(&sPacMan->ViewPort, k + 2, 0x0F, 0x0F, 0x00);
+	SetRGB4(&sPacMan->ViewPort, k + 3, 0x0F, 0x0F, 0x00);
+
+	for (i = 0; i < 240; i++) {
 		UWORD *p;
 
-		if (frame>2)
-			frame=0;
+		if (frame > 2)
+			frame = 0;
 
-		if (frame==0)
+		if (frame == 0)
 			p = paccy_right_0;
-		else if (frame==1)
+		else if (frame == 1)
 			p = paccy_right_1;
-		else if (frame==2)
+		else if (frame == 2)
 			p = paccy_right_2;
 
 		ChangeSprite(&sPacMan->ViewPort,
-				&paccySprite,
-				p);
+		             &paccySprite,
+		             p);
 
 		MoveSprite(&sPacMan->ViewPort,
-				&paccySprite,
-				globalX,
-				by);
+		           &paccySprite,
+		           globalX,
+		           by);
 
 		frame++;
 
@@ -164,33 +157,29 @@ PaccyTask()
 	Wait(0);
 }
 
-BlinkyTask()
-{
-	SHORT blinky_spr;
-
-	int k, bx=0, by=20, bi=0, frame=0;
+void BlinkyTask() {
+	int k, bx = 0, by = 20, bi = 0, frame = 0;
 
 	blinkySprite.posctldata = blinky_right_0;
 	blinkySprite.height = 16;
 	blinkySprite.x = bx;
 	blinkySprite.y = by;
 
-	blinky_spr = GetSprite(&blinkySprite, 2);
+	SHORT blinky_spr = GetSprite(&blinkySprite, 2);
 
-	k = ((blinky_spr & 0x06) * 2) + 16;
+	k = (blinky_spr & 0x06) * 2 + 16;
 
-	SetRGB4(&sPacMan->ViewPort, k+1, 0x0F, 0x00, 0x00);
-	SetRGB4(&sPacMan->ViewPort, k+2, 0x0F, 0x0F, 0x0F);
-	SetRGB4(&sPacMan->ViewPort, k+3, 0x00, 0x00, 0x0F);
+	SetRGB4(&sPacMan->ViewPort, k + 1, 0x0F, 0x00, 0x00);
+	SetRGB4(&sPacMan->ViewPort, k + 2, 0x0F, 0x0F, 0x0F);
+	SetRGB4(&sPacMan->ViewPort, k + 3, 0x00, 0x00, 0x0F);
 
-	for (bi=0;bi<240;bi++)
-	{
-		if (!(bi&3))
+	for (bi = 0; bi < 240; bi++) {
+		if (!(bi & 3))
 			frame = !frame;
 
-		ChangeSprite(&sPacMan->ViewPort, 
-				&blinkySprite, 
-				frame ? &blinky_right_0 : &blinky_right_1);
+		ChangeSprite(&sPacMan->ViewPort,
+		             &blinkySprite,
+		             frame ? &blinky_right_0 : &blinky_right_1);
 		MoveSprite(&sPacMan->ViewPort, &blinkySprite, globalX++, by);
 		WaitTOF();
 	}
@@ -200,33 +189,29 @@ BlinkyTask()
 	Wait(0); /* ...for Godot. */
 }
 
-PinkyTask()
-{
-	SHORT pinky_spr;
-
-	int k, bx=0, by=36, bi=0, frame=0;
+void PinkyTask() {
+	int k, bx = 0, by = 36, bi = 0, frame = 0;
 
 	pinkySprite.posctldata = pinky_right_0;
 	pinkySprite.height = 16;
 	pinkySprite.x = bx;
 	pinkySprite.y = by;
 
-	pinky_spr = GetSprite(&pinkySprite, 4);
+	SHORT pinky_spr = GetSprite(&pinkySprite, 4);
 
-	k = ((pinky_spr & 0x06) * 2) + 16;
+	k = (pinky_spr & 0x06) * 2 + 16;
 
-	SetRGB4(&sPacMan->ViewPort, k+1, 0x0F, 0x0B, 0x0F);
-	SetRGB4(&sPacMan->ViewPort, k+2, 0x0F, 0x0F, 0x0F);
-	SetRGB4(&sPacMan->ViewPort, k+3, 0x00, 0x00, 0x0F);
+	SetRGB4(&sPacMan->ViewPort, k + 1, 0x0F, 0x0B, 0x0F);
+	SetRGB4(&sPacMan->ViewPort, k + 2, 0x0F, 0x0F, 0x0F);
+	SetRGB4(&sPacMan->ViewPort, k + 3, 0x00, 0x00, 0x0F);
 
-	for (bi=0;bi<240;bi++)
-	{
-		if (!(bi&3))
+	for (bi = 0; bi < 240; bi++) {
+		if (!(bi & 3))
 			frame = !frame;
 
-		ChangeSprite(&sPacMan->ViewPort, 
-				&pinkySprite, 
-				frame ? &pinky_right_0 : &pinky_right_1);
+		ChangeSprite(&sPacMan->ViewPort,
+		             &pinkySprite,
+		             frame ? &pinky_right_0 : &pinky_right_1);
 		MoveSprite(&sPacMan->ViewPort, &pinkySprite, globalX, by);
 		WaitTOF();
 	}
@@ -236,33 +221,29 @@ PinkyTask()
 	Wait(0); /* ...for Godot. */
 }
 
-InkyTask()
-{
-	SHORT inky_spr;
-
-	int k, bx=0, by=52, bi=0, frame=0;
+void InkyTask() {
+	int k, bx = 0, by = 52, bi = 0, frame = 0;
 
 	inkySprite.posctldata = inky_right_0;
 	inkySprite.height = 16;
 	inkySprite.x = bx;
 	inkySprite.y = by;
 
-	inky_spr = GetSprite(&inkySprite, 6);
+	SHORT inky_spr = GetSprite(&inkySprite, 6);
 
-	k = ((inky_spr & 0x06) * 2) + 16;
+	k = (inky_spr & 0x06) * 2 + 16;
 
-	SetRGB4(&sPacMan->ViewPort, k+1, 0x00, 0x0F, 0x0F);
-	SetRGB4(&sPacMan->ViewPort, k+2, 0x0F, 0x0F, 0x0F);
-	SetRGB4(&sPacMan->ViewPort, k+3, 0x00, 0x00, 0x0F);
+	SetRGB4(&sPacMan->ViewPort, k + 1, 0x00, 0x0F, 0x0F);
+	SetRGB4(&sPacMan->ViewPort, k + 2, 0x0F, 0x0F, 0x0F);
+	SetRGB4(&sPacMan->ViewPort, k + 3, 0x00, 0x00, 0x0F);
 
-	for (bi=0;bi<240;bi++)
-	{
-		if (!(bi&3))
+	for (bi = 0; bi < 240; bi++) {
+		if (!(bi & 3))
 			frame = !frame;
 
-		ChangeSprite(&sPacMan->ViewPort, 
-				&inkySprite, 
-				frame ? &inky_right_0 : &inky_right_1);
+		ChangeSprite(&sPacMan->ViewPort,
+		             &inkySprite,
+		             frame ? &inky_right_0 : &inky_right_1);
 		MoveSprite(&sPacMan->ViewPort, &inkySprite, globalX, by);
 		WaitTOF();
 	}
@@ -272,17 +253,16 @@ InkyTask()
 	Wait(0); /* ...for Godot. */
 }
 
-ClydeTask()
-{
-	int i=0;
-	int frame=0;
+void ClydeTask() {
+	int i = 0;
+	int frame = 0;
 
 	clydeBob.BobVSprite = &clydeVSprite;
 	clydeVSprite.VSBob = &clydeBob;
 
-	clydeVSprite.Height = 16;      /* 16 lines          */
-	clydeVSprite.Width = 1;        /* 1 word, 16 pixels */
-	clydeVSprite.Depth = 4;        /* 8 colors          */
+	clydeVSprite.Height = 16; /* 16 lines          */
+	clydeVSprite.Width = 1; /* 1 word, 16 pixels */
+	clydeVSprite.Depth = 4; /* 8 colors          */
 	clydeVSprite.PlanePick = 0x0F; /* 3 bitplanes       */
 	clydeVSprite.ImageData = bmClyde_r00;
 	clydeBob.ImageShadow = smClyde_r00;
@@ -301,16 +281,15 @@ ClydeTask()
 	/* Optimize by sorting only once here */
 	SortGList(wPacMan->RPort);
 
-	for (i=0;i<240;i++)
-	{
-		if (!(i&3))
+	for (i = 0; i < 240; i++) {
+		if (!(i & 3))
 			frame = !frame;
-	
+
 		clydeVSprite.ImageData = frame ? bmClyde_r00 : bmClyde_r01;
 		clydeBob.ImageShadow = frame ? smClyde_r00 : smClyde_r01;
 
 		clydeVSprite.X = globalX;
-		DrawGList(wPacMan->RPort,&sPacMan->ViewPort);
+		DrawGList(wPacMan->RPort, &sPacMan->ViewPort);
 		WaitTOF();
 	}
 
@@ -319,16 +298,15 @@ ClydeTask()
 
 /* The Test Harness ******************************************************/
 
-main()
-{
+int main() {
 	GfxBase = (struct GfxBase *)
-		OpenLibrary("graphics.library",0);
+			OpenLibrary("graphics.library", 0);
 
 	if (!GfxBase)
 		goto bye;
 
 	IntuitionBase = (struct IntuitionBase *)
-		OpenLibrary("intuition.library",0);
+			OpenLibrary("intuition.library", 0);
 
 	if (!IntuitionBase)
 		goto bye;
@@ -337,7 +315,7 @@ main()
 	AddFont(&Arcade8Font);
 
 	nsPacMan.Font = &taFont;
-	
+
 	sPacMan = OpenScreen(&nsPacMan);
 	if (!sPacMan)
 		goto bye;
@@ -349,18 +327,18 @@ main()
 	if (!wPacMan)
 		goto bye;
 
-	SetRast(wPacMan->RPort,0);
+	SetRast(wPacMan->RPort, 0);
 
-	DrawBorder(wPacMan->RPort,&boMaze,0,7);
+	DrawBorder(wPacMan->RPort, &boMaze, 0, 7);
 
-	paccyTask  = CreateTask("paccy.task", 0,&PaccyTask, 1000);
-	blinkyTask = CreateTask("blinky.task",0,&BlinkyTask,1000);
-	pinkyTask  = CreateTask("pinky.task" ,0,&PinkyTask ,1000);
-	inkyTask   = CreateTask("inky.task"  ,0,&InkyTask  ,1000);
-	clydeTask  = CreateTask("clyde.task" ,0,&ClydeTask ,1000);
-	
+	paccyTask = CreateTask("paccy.task", 0, &PaccyTask, 1000);
+	blinkyTask = CreateTask("blinky.task", 0, &BlinkyTask, 1000);
+	pinkyTask = CreateTask("pinky.task", 0, &PinkyTask, 1000);
+	inkyTask = CreateTask("inky.task", 0, &InkyTask, 1000);
+	clydeTask = CreateTask("clyde.task", 0, &ClydeTask, 1000);
+
 	Delay(600);
-	
+
 bye:
 	if (paccyTask)
 		DeleteTask(paccyTask);
@@ -386,8 +364,8 @@ bye:
 		CloseScreen(sPacMan);
 
 	if (IntuitionBase)
-		CloseLibrary(IntuitionBase);
+		CloseLibrary((struct Library *) IntuitionBase);
 
 	if (GfxBase)
-		CloseLibrary(GfxBase);
+		CloseLibrary((struct Library *) GfxBase);
 }

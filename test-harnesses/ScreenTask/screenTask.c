@@ -6,6 +6,11 @@
  * @license GPL v. 3, see LICENSE for details.
  */
 
+#include <clib/alib_protos.h>
+#include <clib/dos_protos.h>
+#include <clib/exec_protos.h>
+#include <clib/graphics_protos.h>
+#include <clib/intuition_protos.h>
 #include <exec/types.h>
 #include <exec/memory.h>
 #include <exec/exec.h>
@@ -30,29 +35,27 @@ struct IntuitionBase *IntuitionBase;
 struct Task *task_screenTask;
 struct MsgPort *port_screenTask;
 
-struct Screen *OpenScreen();
 
-struct ScMessage
-{
+struct ScMessage {
 	struct Message msg;
 	long command;
 };
 
 struct Screen *sPacMan;
-struct NewScreen nsPacMan = 
+struct NewScreen nsPacMan =
 {
 	0, 0,
-	320, 200, 4,	/* 320x200 16 colors */
+	320, 200, 4, /* 320x200 16 colors */
 	0, 1,
 	NULL,
 	CUSTOMSCREEN,
-	NULL,	/* Change this later for font! */
+	NULL, /* Change this later for font! */
 	"PAC-MAN (tm)",
 	NULL
 };
 
 /* Color Palette for nsPacMan */
-UBYTE colorTable[16] = 
+UBYTE colorTable[16] =
 {
 	0x000,
 	0xFF0,
@@ -72,44 +75,32 @@ UBYTE colorTable[16] =
 	0xFFF
 };
 
-screenTask_OPEN()
-{
+void screenTask_OPEN() {
 	sPacMan = OpenScreen(&nsPacMan);
 	if (!sPacMan)
-		return 0;
+		return;
 
-	LoadRGB4(&sPacMan->ViewPort,colorTable,sizeof(colorTable));
-
-	return 0;
+	LoadRGB4(&sPacMan->ViewPort, colorTable, sizeof(colorTable));
 }
 
-screenTask_CLOSE()
-{
+void screenTask_CLOSE() {
 	if (sPacMan)
 		CloseScreen(sPacMan);
-	
-	return 0;
 }
 
-screenTask()
-{
+void screenTask() {
 	struct ScMessage *smsg;
 
 	UBYTE st_running = TRUE;
-	port_screenTask = (struct MsgPort *)
-		CreatePort(PORT_NAME,0L);
+	port_screenTask = CreatePort(PORT_NAME, 0L);
 
 	if (!port_screenTask)
 		goto godot;
 
-	while (st_running)
-	{
+	while (st_running) {
 		WaitPort(port_screenTask);
-		while(smsg = (struct ScreenMessage *)GetMsg(port_screenTask))
-		{
-
-			switch(smsg->command)
-			{
+		while ((smsg = (struct ScreenMessage *) GetMsg(port_screenTask))) {
+			switch (smsg->command) {
 				case SCMD_OPEN:
 					screenTask_OPEN();
 					break;
@@ -117,15 +108,17 @@ screenTask()
 					screenTask_CLOSE();
 					break;
 				case SCMD_STOP:
-					st_running=FALSE;
+					st_running = FALSE;
+					break;
+				default:
 					break;
 			}
 
-			ReplyMsg((struct Message *)smsg);
+			ReplyMsg((struct Message *) smsg);
 		}
 	};
 
-/* We come down here when CMD_STOP */
+	/* We come down here when CMD_STOP */
 godot:
 	if (port_screenTask)
 		DeletePort(port_screenTask);
@@ -135,92 +128,75 @@ godot:
 
 /** The Test Harness ************************************************/
 
-struct MsgPort *FindPort();
 
-test()
-{
-	struct MsgPort *port;
-	struct MsgPort *replyPort;
-	struct ScMessage *msg;
+int test() {
+	task_screenTask =
+			CreateTask(TASK_NAME,
+			           PRIORITY,
+			           screenTask,
+			           STACK_SIZE);
 
-	task_screenTask = 
-		(struct Task *)CreateTask(TASK_NAME,
-						PRIORITY,
-						screenTask,
-						STACK_SIZE);
-
-	if (!task_screenTask)
-	{
-		return FALSE;		
-	}
-
-	port = FindPort(PORT_NAME);
-	if (!port)
-	{
+	if (!task_screenTask) {
 		return FALSE;
 	}
 
-	replyPort = (struct MsgPort *)CreatePort(0,0);
+	struct MsgPort *port = FindPort(PORT_NAME);
+	if (!port) {
+		return FALSE;
+	}
 
-	msg = (struct ScMessage *)AllocMem(sizeof(struct ScMessage),
-						MEMF_PUBLIC|MEMF_CLEAR);
+	struct MsgPort *replyPort = CreatePort(0, 0);
+
+	struct ScMessage *msg = (struct ScMessage *) AllocMem(sizeof(struct ScMessage),
+	                                                      MEMF_PUBLIC | MEMF_CLEAR);
 
 	msg->msg.mn_Node.ln_Type = NT_MESSAGE;
 	msg->msg.mn_Length = sizeof(struct ScMessage);
 	msg->msg.mn_ReplyPort = replyPort;
 	msg->command = SCMD_OPEN;
 
-	PutMsg(port, msg);
-	msg = (struct ScMessage *)GetMsg(replyPort);
+	PutMsg(port, (struct Message *) msg);
+	msg = (struct ScMessage *) GetMsg(replyPort);
 
 	DisplayBeep(NULL);
 
 	Delay(600);
 
-	while(1);
-
-	return TRUE;
+	FOREVER {
+	}
 }
 
-done()
-{
+void done() {
 	if (IntuitionBase)
-		CloseLibrary(IntuitionBase);
+		CloseLibrary((struct Library *) IntuitionBase);
 
 	if (GfxBase)
-		CloseLibrary(GfxBase);
-
-	return 0;
+		CloseLibrary((struct Library *) GfxBase);
 }
 
-init()
-{
+int init() {
 	GfxBase = (struct GfxBase *)
-		OpenLibrary("graphics.library",0);
-	if (!GfxBase)
-	{
+			OpenLibrary("graphics.library", 0);
+	if (!GfxBase) {
 		return FALSE;
 	}
 
 	IntuitionBase = (struct IntuitionBase *)
-		OpenLibrary("intuition.library",0);
-	if (!IntuitionBase)
-	{
+			OpenLibrary("intuition.library", 0);
+	if (!IntuitionBase) {
 		return FALSE;
 	}
-	
+
 	return TRUE;
 }
 
-main()
-{
-	if (!init())
-	{
+int main() {
+	if (!init()) {
 		done();
 		return 1;
 	}
 
 	test();
-	
+
 	done();
 }

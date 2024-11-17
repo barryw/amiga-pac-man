@@ -6,28 +6,30 @@
  * @license GPL v. 3, see LICENSE for details.
  */
 
+#include <clib/alib_protos.h>
+#include <clib/dos_protos.h>
+#include <clib/exec_protos.h>
+#include <clib/graphics_protos.h>
+#include <clib/intuition_protos.h>
 #include <exec/types.h>
-#include <exec/memory.h>
 #include <exec/exec.h>
 #include <graphics/gfx.h>
 #include <graphics/gfxbase.h>
 #include <graphics/gfxmacros.h>
 #include <intuition/intuition.h>
 
-#include "font.h"
+#include "../font.h"
 
 struct GfxBase *GfxBase;
 struct IntuitionBase *IntuitionBase;
 
 /** The Test Harness *******************************************************/
 
-struct Screen *OpenScreen();
-struct Window *OpenWindow();
 
 struct Screen *sPacMan;
 struct Window *wPacMan;
 
-struct NewScreen nsPacMan = 
+struct NewScreen nsPacMan =
 {
 	0, 0,
 	320, 200, 4,
@@ -39,19 +41,19 @@ struct NewScreen nsPacMan =
 	NULL
 };
 
-struct NewWindow nwPacMan = 
+struct NewWindow nwPacMan =
 {
 	0, 12,
 	320, 188,
 	0, 1,
 	CLOSEWINDOW,
-	ACTIVATE|WINDOWCLOSE,
+	ACTIVATE | WINDOWCLOSE,
 	NULL,
 	NULL,
 	"PRESS TO CLOSE",
 	NULL,
 	NULL,
-	320,200,320,200,
+	320, 200, 320, 200,
 	CUSTOMSCREEN
 };
 
@@ -62,27 +64,27 @@ struct TextAttr taFont = {
 	FPF_DESIGNED
 };
 
-USHORT colorTable[16] = 
+USHORT colorTable[16] =
 {
-	0x000,		/* 0: Black */
-	0xFF0,		/* 1: Yellow */
-	0xF00,		/* 2: Light Red */
-	0xFFF,		/* 3: White */
-	0x00F,		/* 4: Light Blue */
-	0xF0F,		/* 5: Light Magenta */
-	0x0FF,		/* 6: Light Cyan */
-	0xF80,		/* 7: Dark Yellow (pale orange?) */
-	0x0F0,		/* 8: Light Green */
-	0xFA0,		/* 9: Light Orange */
-	0x777,		/* A: Pinky white */
-	0x0F0,		/* B: Light Green */
-	0x0FF,		/* C: Light Cyan */
-	0xF00,		/* D: Light Red */
-	0xF0F,		/* E: Light Magenta */
-	0xFFF,		/* F: White */
+	0x000, /* 0: Black */
+	0xFF0, /* 1: Yellow */
+	0xF00, /* 2: Light Red */
+	0xFFF, /* 3: White */
+	0x00F, /* 4: Light Blue */
+	0xF0F, /* 5: Light Magenta */
+	0x0FF, /* 6: Light Cyan */
+	0xF80, /* 7: Dark Yellow (pale orange?) */
+	0x0F0, /* 8: Light Green */
+	0xFA0, /* 9: Light Orange */
+	0x777, /* A: Pinky white */
+	0x0F0, /* B: Light Green */
+	0x0FF, /* C: Light Cyan */
+	0xF00, /* D: Light Red */
+	0xF0F, /* E: Light Magenta */
+	0xFFF, /* F: White */
 };
 
-SHORT bmEmpty[] = 
+SHORT bmEmpty[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -157,19 +159,19 @@ SHORT bmEmpty[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iEmpty = 
+struct Image iEmpty =
 {
-	0, 0,		/* TopEdge, LeftEdge */
-	16, 16, 4,	/* Width, Height, Depth (# of bitplanes) */
-	bmEmpty,	/* Pointer to bitmap */
-	0x0F, 0x00, 	/* PlanePick, PlaneOnOff */
-	NULL		/* NextImage */
+	0, 0, /* TopEdge, LeftEdge */
+	16, 16, 4, /* Width, Height, Depth (# of bitplanes) */
+	bmEmpty, /* Pointer to bitmap */
+	0x0F, 0x00, /* PlanePick, PlaneOnOff */
+	NULL /* NextImage */
 };
 
 /* PlanePick and PlaneOnOff are explained on page B-7 of the */
 /* Amiga Intuition Reference Manual, by Mical and Deyl       */
 
-SHORT bmKey[] = 
+SHORT bmKey[] =
 {
 
 	/* BITPLANE 0 */
@@ -229,7 +231,7 @@ SHORT bmKey[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iKey = 
+struct Image iKey =
 {
 	0, 0,
 	16, 16, 4,
@@ -238,7 +240,7 @@ struct Image iKey =
 	NULL
 };
 
-SHORT bmGalaxian[] = 
+SHORT bmGalaxian[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -298,7 +300,7 @@ SHORT bmGalaxian[] =
 	/* Plane not picked */
 };
 
-struct Image iGalaxian = 
+struct Image iGalaxian =
 {
 	0, 0,
 	16, 16, 4,
@@ -307,7 +309,7 @@ struct Image iGalaxian =
 	NULL
 };
 
-SHORT bmBell[] = 
+SHORT bmBell[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -367,7 +369,7 @@ SHORT bmBell[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iBell = 
+struct Image iBell =
 {
 	0, 0,
 	16, 16, 4,
@@ -376,7 +378,7 @@ struct Image iBell =
 	NULL
 };
 
-SHORT bmMelon[] = 
+SHORT bmMelon[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -451,7 +453,7 @@ SHORT bmMelon[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iMelon = 
+struct Image iMelon =
 {
 	0, 0,
 	16, 16, 4,
@@ -460,7 +462,7 @@ struct Image iMelon =
 	NULL
 };
 
-SHORT bmApple[] = 
+SHORT bmApple[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -520,7 +522,7 @@ SHORT bmApple[] =
 	/* Plane not picked */
 };
 
-struct Image iApple = 
+struct Image iApple =
 {
 	0, 0,
 	16, 16, 3,
@@ -529,7 +531,7 @@ struct Image iApple =
 	NULL
 };
 
-SHORT bmOrange[] = 
+SHORT bmOrange[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -601,7 +603,7 @@ SHORT bmOrange[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iOrange = 
+struct Image iOrange =
 {
 	0, 0,
 	16, 16, 4,
@@ -610,7 +612,7 @@ struct Image iOrange =
 	NULL
 };
 
-SHORT bmStrawberry[] = 
+SHORT bmStrawberry[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -670,7 +672,7 @@ SHORT bmStrawberry[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iStrawberry = 
+struct Image iStrawberry =
 {
 	0, 0,
 	16, 16, 4,
@@ -679,64 +681,64 @@ struct Image iStrawberry =
 	NULL
 };
 
-SHORT bmCherry[] = 
+SHORT bmCherry[] =
 {
 	/* BITPLANE 0 */
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x000C,	/* 0b0000000000001100 */	
-	0x003C,	/* 0b0000000000111100 */	
-	0x00D0,	/* 0b0000000011010000 */	
-	0x0110,	/* 0b0000000100010000 */	
-	0x0220,	/* 0b0000001000100000 */	
-	0x0440,	/* 0b0000010001000000 */	
-	0x0040,	/* 0b0000000001000000 */	
-	0x1040,	/* 0b0001000001000000 */	
-	0x0800,	/* 0b0000100000000000 */	
-	0x0080,	/* 0b0000000010000000 */	
-	0x0040,	/* 0b0000000001000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x000C, /* 0b0000000000001100 */
+	0x003C, /* 0b0000000000111100 */
+	0x00D0, /* 0b0000000011010000 */
+	0x0110, /* 0b0000000100010000 */
+	0x0220, /* 0b0000001000100000 */
+	0x0440, /* 0b0000010001000000 */
+	0x0040, /* 0b0000000001000000 */
+	0x1040, /* 0b0001000001000000 */
+	0x0800, /* 0b0000100000000000 */
+	0x0080, /* 0b0000000010000000 */
+	0x0040, /* 0b0000000001000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
 
 	/* BITPLANE 1 */
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x000C,	/* 0b0000000000001100 */	
-	0x003C,	/* 0b0000000000111100 */	
-	0x00D0,	/* 0b0000000011010000 */	
-	0x0110,	/* 0b0000000100010000 */	
-	0x1E20,	/* 0b0001111000100000 */	
-	0x3F40,	/* 0b0011111101000000 */	
-	0x3EF0,	/* 0b0011111011110000 */	
-	0x3DF8,	/* 0b0011110111111000 */	
-	0x3DF8,	/* 0b0011110111111000 */	
-	0x1DF8,	/* 0b0001110111111000 */	
-	0x01F8,	/* 0b0000000111111000 */	
-	0x00F0,	/* 0b0000000011110000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x000C, /* 0b0000000000001100 */
+	0x003C, /* 0b0000000000111100 */
+	0x00D0, /* 0b0000000011010000 */
+	0x0110, /* 0b0000000100010000 */
+	0x1E20, /* 0b0001111000100000 */
+	0x3F40, /* 0b0011111101000000 */
+	0x3EF0, /* 0b0011111011110000 */
+	0x3DF8, /* 0b0011110111111000 */
+	0x3DF8, /* 0b0011110111111000 */
+	0x1DF8, /* 0b0001110111111000 */
+	0x01F8, /* 0b0000000111111000 */
+	0x00F0, /* 0b0000000011110000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
 
 	/* BITPLANE 2 */
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x000C,	/* 0b0000000000001100 */	
-	0x003C,	/* 0b0000000000111100 */	
-	0x00D0,	/* 0b0000000011010000 */	
-	0x0110,	/* 0b0000000100010000 */	
-	0x0220,	/* 0b0000001000100000 */	
-	0x0440,	/* 0b0000010001000000 */	
-	0x0040,	/* 0b0000000001000000 */	
-	0x0040,	/* 0b0000000001000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x000C, /* 0b0000000000001100 */
+	0x003C, /* 0b0000000000111100 */
+	0x00D0, /* 0b0000000011010000 */
+	0x0110, /* 0b0000000100010000 */
+	0x0220, /* 0b0000001000100000 */
+	0x0440, /* 0b0000010001000000 */
+	0x0040, /* 0b0000000001000000 */
+	0x0040, /* 0b0000000001000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
 };
 
-struct Image iCherry = 
+struct Image iCherry =
 {
 	0, 0,
 	16, 16, 3,
@@ -745,110 +747,93 @@ struct Image iCherry =
 	NULL
 };
 
-drawPlanes(img,y)
-struct Image *img;
-SHORT y;
-{
-	SHORT oldDepth, oldPlanePick;
-	UWORD *oldImageData;
+void drawPlanes(struct Image *img, SHORT y) {
+	const SHORT oldDepth = img->Depth;
+	const SHORT oldPlanePick = img->PlanePick;
+	UWORD *oldImageData = img->ImageData;
 
-	oldDepth = img->Depth;
-	oldPlanePick = img->PlanePick;
-	oldImageData = img->ImageData;
-
-	if (oldPlanePick & 0x01)
-	{
+	if (oldPlanePick & 0x01) {
 		img->Depth = 1;
 		img->PlanePick = 0x1;
-		DrawImage(wPacMan->RPort,img,32,y);
+		DrawImage(wPacMan->RPort, img, 32, y);
 		img->ImageData += 16;
 	}
 
-	if (oldPlanePick & 0x02)
-	{
+	if (oldPlanePick & 0x02) {
 		img->PlanePick = 0x02;
-		DrawImage(wPacMan->RPort,img,64,y);
+		DrawImage(wPacMan->RPort, img, 64, y);
 		img->ImageData += 16;
 	}
 
-	if (oldPlanePick & 0x04)
-	{
+	if (oldPlanePick & 0x04) {
 		img->PlanePick = 0x04;
-		DrawImage(wPacMan->RPort,img,96,y);
+		DrawImage(wPacMan->RPort, img, 96, y);
 		img->ImageData += 16;
 	}
 
-	if (oldPlanePick & 0x08)
-	{
+	if (oldPlanePick & 0x08) {
 		img->PlanePick = 0x08;
-		DrawImage(wPacMan->RPort,img,128,y);
+		DrawImage(wPacMan->RPort, img, 128, y);
 		img->ImageData += 16;
 	}
 
 	img->Depth = oldDepth;
 	img->PlanePick = oldPlanePick;
 	img->ImageData = oldImageData;
-	DrawImage(wPacMan->RPort,img,160,y);
+	DrawImage(wPacMan->RPort, img, 160, y);
 }
 
-char *colorLegend="0123456789ABCDEF";
+char *colorLegend = "0123456789ABCDEF";
 
-drawColors()
-{
-	int i;
-
+void drawColors() {
 	SetOPen(wPacMan->RPort, 0); /* Black border around color chips */
 
-	for (i=0;i<16;i++)
-	{
-		SetAPen(wPacMan->RPort,i);
-		RectFill(wPacMan->RPort,312-16,(i<<3)+12,320-16,((i<<3)+8)+12);
-		Move(wPacMan->RPort,300-16,(i<<3)+12+7);
-		Text(wPacMan->RPort,colorLegend++,1);
+	for (int i = 0; i < 16; i++) {
+		SetAPen(wPacMan->RPort, i);
+		RectFill(wPacMan->RPort, 312 - 16, (i << 3) + 12, 320 - 16, ((i << 3) + 8) + 12);
+		Move(wPacMan->RPort, 300 - 16, (i << 3) + 12 + 7);
+		Text(wPacMan->RPort, colorLegend++, 1);
 	}
-
 }
 
 #define LEGEND_Y 160
 
-drawLegends()
-{
-	SetAPen(wPacMan->RPort,0x0F);
+void drawLegends() {
+	SetAPen(wPacMan->RPort, 0x0F);
 
-	Move(wPacMan->RPort,32,LEGEND_Y);
-	Text(wPacMan->RPort,"0",1);
-	Move(wPacMan->RPort,64,LEGEND_Y);
-	Text(wPacMan->RPort,"1",1);
-	Move(wPacMan->RPort,96,LEGEND_Y);
-	Text(wPacMan->RPort,"2",1);
-	Move(wPacMan->RPort,128,LEGEND_Y);
-	Text(wPacMan->RPort,"3",1);
-	Move(wPacMan->RPort,160,LEGEND_Y);
-	Text(wPacMan->RPort,"ALL",3);
+	Move(wPacMan->RPort, 32,LEGEND_Y);
+	Text(wPacMan->RPort, "0", 1);
+	Move(wPacMan->RPort, 64,LEGEND_Y);
+	Text(wPacMan->RPort, "1", 1);
+	Move(wPacMan->RPort, 96,LEGEND_Y);
+	Text(wPacMan->RPort, "2", 1);
+	Move(wPacMan->RPort, 128,LEGEND_Y);
+	Text(wPacMan->RPort, "3", 1);
+	Move(wPacMan->RPort, 160,LEGEND_Y);
+	Text(wPacMan->RPort, "ALL", 3);
 
-	Move(wPacMan->RPort,32,LEGEND_Y+8);
-	Text(wPacMan->RPort,"1",1);
-	Move(wPacMan->RPort,64,LEGEND_Y+8);
-	Text(wPacMan->RPort,"2",1);
-	Move(wPacMan->RPort,96,LEGEND_Y+8);
-	Text(wPacMan->RPort,"4",1);
-	Move(wPacMan->RPort,128,LEGEND_Y+8);
-	Text(wPacMan->RPort,"8",1);
+	Move(wPacMan->RPort, 32,LEGEND_Y + 8);
+	Text(wPacMan->RPort, "1", 1);
+	Move(wPacMan->RPort, 64,LEGEND_Y + 8);
+	Text(wPacMan->RPort, "2", 1);
+	Move(wPacMan->RPort, 96,LEGEND_Y + 8);
+	Text(wPacMan->RPort, "4", 1);
+	Move(wPacMan->RPort, 128,LEGEND_Y + 8);
+	Text(wPacMan->RPort, "8", 1);
 }
 
 /**
  * The test harness.
  */
-main()
-{
+int main() {
 	GfxBase = (struct GfxBase *)
-		OpenLibrary("graphics.library",0);
+			OpenLibrary("graphics.library", 0);
 
 	if (!GfxBase)
 		goto bye;
 
 	IntuitionBase = (struct IntuitionBase *)
-		OpenLibrary("intuition.library",0);
+			OpenLibrary("intuition.library", 0);
 
 	if (!IntuitionBase)
 		goto bye;
@@ -857,7 +842,7 @@ main()
 	AddFont(&Arcade8Font);
 
 	nsPacMan.Font = &taFont;
-	
+
 	sPacMan = OpenScreen(&nsPacMan);
 	if (!sPacMan)
 		goto bye;
@@ -866,8 +851,8 @@ main()
 	LoadRGB4(&sPacMan->ViewPort, colorTable, 16);
 
 	/* Set our mouse (sprite 0 colors) */
-	SetRGB4(&sPacMan->ViewPort,0x11,0x07,0x07,0x00);
-	SetRGB4(&sPacMan->ViewPort,0x13,0x0F,0x0F,0x00);
+	SetRGB4(&sPacMan->ViewPort, 0x11, 0x07, 0x07, 0x00);
+	SetRGB4(&sPacMan->ViewPort, 0x13, 0x0F, 0x0F, 0x00);
 
 	nwPacMan.Screen = sPacMan;
 	wPacMan = OpenWindow(&nwPacMan);
@@ -877,15 +862,15 @@ main()
 	drawColors();
 	drawLegends();
 
-	drawPlanes(&iCherry,32);
-	drawPlanes(&iOrange,48);
-	drawPlanes(&iApple,64);
-	drawPlanes(&iMelon,80);
-	drawPlanes(&iGalaxian,96);
-	drawPlanes(&iBell,112);
-	drawPlanes(&iKey,128);
-	
-	Wait(1<<wPacMan->UserPort->mp_SigBit);
+	drawPlanes(&iCherry, 32);
+	drawPlanes(&iOrange, 48);
+	drawPlanes(&iApple, 64);
+	drawPlanes(&iMelon, 80);
+	drawPlanes(&iGalaxian, 96);
+	drawPlanes(&iBell, 112);
+	drawPlanes(&iKey, 128);
+
+	Wait(1 << wPacMan->UserPort->mp_SigBit);
 
 bye:
 	RemFont(&Arcade8Font);
@@ -898,8 +883,8 @@ bye:
 		CloseScreen(sPacMan);
 
 	if (IntuitionBase)
-		CloseLibrary(IntuitionBase);
+		CloseLibrary((struct Library *) IntuitionBase);
 
 	if (GfxBase)
-		CloseLibrary(GfxBase);
+		CloseLibrary((struct Library *) GfxBase);
 }

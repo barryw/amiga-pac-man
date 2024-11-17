@@ -6,27 +6,25 @@
  * @license GPL v. 3, see LICENSE for details.
  */
 
-#include <exec/types.h>
-#include <exec/memory.h>
+#include <clib/alib_protos.h>
+#include <clib/dos_protos.h>
+#include <clib/exec_protos.h>
+#include <clib/graphics_protos.h>
+#include <clib/intuition_protos.h>
 #include <exec/exec.h>
+#include <exec/types.h>
 #include <graphics/gfx.h>
 #include <graphics/gfxbase.h>
 #include <intuition/intuition.h>
 
-#include "font.h"
+#include "../font.h"
 
 struct GfxBase *GfxBase;
 struct IntuitionBase *IntuitionBase;
-
-/** The Test Harness *******************************************************/
-
-struct Screen *OpenScreen();
-struct Window *OpenWindow();
-
 struct Screen *sPacMan;
 struct Window *wPacMan;
 
-struct NewScreen nsPacMan = 
+struct NewScreen nsPacMan =
 {
 	0, 0,
 	320, 200, 4,
@@ -38,19 +36,19 @@ struct NewScreen nsPacMan =
 	NULL
 };
 
-struct NewWindow nwPacMan = 
+struct NewWindow nwPacMan =
 {
 	0, 0,
 	320, 200,
 	0, 1,
 	NULL,
-	ACTIVATE|BORDERLESS|BACKDROP,
+	ACTIVATE | BORDERLESS | BACKDROP,
 	NULL,
 	NULL,
 	"PAC-MAN(tm)",
 	NULL,
 	NULL,
-	320,200,320,200,
+	320, 200, 320, 200,
 	CUSTOMSCREEN
 };
 
@@ -61,27 +59,27 @@ struct TextAttr taFont = {
 	FPF_DESIGNED
 };
 
-USHORT colorTable[16] = 
+USHORT colorTable[16] =
 {
-	0x000,		/* 0: Black */
-	0xFF0,		/* 1: Yellow */
-	0xF00,		/* 2: Light Red */
-	0xFFF,		/* 3: White */
-	0x00F,		/* 4: Light Blue */
-	0xF0F,		/* 5: Light Magenta */
-	0x0FF,		/* 6: Light Cyan */
-	0xF80,		/* 7: Dark Yellow (pale orange?) */
-	0x0F0,		/* 8: Light Green */
-	0xFA0,		/* 9: Light Orange */
-	0x777,		/* A: Pinky white */
-	0x0F0,		/* B: Light Green */
-	0x0FF,		/* C: Light Cyan */
-	0xF00,		/* D: Light Red */
-	0xF0F,		/* E: Light Magenta */
-	0xFFF,		/* F: White */
+	0x000, /* 0: Black */
+	0xFF0, /* 1: Yellow */
+	0xF00, /* 2: Light Red */
+	0xFFF, /* 3: White */
+	0x00F, /* 4: Light Blue */
+	0xF0F, /* 5: Light Magenta */
+	0x0FF, /* 6: Light Cyan */
+	0xF80, /* 7: Dark Yellow (pale orange?) */
+	0x0F0, /* 8: Light Green */
+	0xFA0, /* 9: Light Orange */
+	0x777, /* A: Pinky white */
+	0x0F0, /* B: Light Green */
+	0x0FF, /* C: Light Cyan */
+	0xF00, /* D: Light Red */
+	0xF0F, /* E: Light Magenta */
+	0xFFF, /* F: White */
 };
 
-SHORT bmEmpty[] = 
+SHORT bmEmpty[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -156,19 +154,19 @@ SHORT bmEmpty[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iEmpty = 
+struct Image iEmpty =
 {
-	0, 0,		/* TopEdge, LeftEdge */
-	16, 16, 4,	/* Width, Height, Depth (# of bitplanes) */
-	bmEmpty,	/* Pointer to bitmap */
-	0x0F, 0x00, 	/* PlanePick, PlaneOnOff */
-	NULL		/* NextImage */
+	0, 0, /* TopEdge, LeftEdge */
+	16, 16, 4, /* Width, Height, Depth (# of bitplanes) */
+	bmEmpty, /* Pointer to bitmap */
+	0x0F, 0x00, /* PlanePick, PlaneOnOff */
+	NULL /* NextImage */
 };
 
 /* PlanePick and PlaneOnOff are explained on page B-7 of the */
 /* Amiga Intuition Reference Manual, by Mical and Deyl       */
 
-SHORT bmKey[] = 
+SHORT bmKey[] =
 {
 
 	/* BITPLANE 0 */
@@ -228,7 +226,7 @@ SHORT bmKey[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iKey = 
+struct Image iKey =
 {
 	0, 0,
 	16, 16, 4,
@@ -237,7 +235,7 @@ struct Image iKey =
 	NULL
 };
 
-SHORT bmGalaxian[] = 
+SHORT bmGalaxian[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -297,7 +295,7 @@ SHORT bmGalaxian[] =
 	/* Plane not picked */
 };
 
-struct Image iGalaxian = 
+struct Image iGalaxian =
 {
 	0, 0,
 	16, 16, 4,
@@ -306,7 +304,7 @@ struct Image iGalaxian =
 	NULL
 };
 
-SHORT bmBell[] = 
+SHORT bmBell[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -366,7 +364,7 @@ SHORT bmBell[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iBell = 
+struct Image iBell =
 {
 	0, 0,
 	16, 16, 4,
@@ -375,7 +373,7 @@ struct Image iBell =
 	NULL
 };
 
-SHORT bmMelon[] = 
+SHORT bmMelon[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -450,7 +448,7 @@ SHORT bmMelon[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iMelon = 
+struct Image iMelon =
 {
 	0, 0,
 	16, 16, 4,
@@ -459,7 +457,7 @@ struct Image iMelon =
 	NULL
 };
 
-SHORT bmApple[] = 
+SHORT bmApple[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -519,7 +517,7 @@ SHORT bmApple[] =
 	/* Plane not picked */
 };
 
-struct Image iApple = 
+struct Image iApple =
 {
 	0, 0,
 	16, 16, 3,
@@ -528,7 +526,7 @@ struct Image iApple =
 	NULL
 };
 
-SHORT bmOrange[] = 
+SHORT bmOrange[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -600,7 +598,7 @@ SHORT bmOrange[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iOrange = 
+struct Image iOrange =
 {
 	0, 0,
 	16, 16, 4,
@@ -609,7 +607,7 @@ struct Image iOrange =
 	NULL
 };
 
-SHORT bmStrawberry[] = 
+SHORT bmStrawberry[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -669,7 +667,7 @@ SHORT bmStrawberry[] =
 	0x0000, /* 0000000000000000 */
 };
 
-struct Image iStrawberry = 
+struct Image iStrawberry =
 {
 	0, 0,
 	16, 16, 4,
@@ -678,64 +676,64 @@ struct Image iStrawberry =
 	NULL
 };
 
-SHORT bmCherry[] = 
+SHORT bmCherry[] =
 {
 	/* BITPLANE 0 */
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x000C,	/* 0b0000000000001100 */	
-	0x003C,	/* 0b0000000000111100 */	
-	0x00D0,	/* 0b0000000011010000 */	
-	0x0110,	/* 0b0000000100010000 */	
-	0x0220,	/* 0b0000001000100000 */	
-	0x0440,	/* 0b0000010001000000 */	
-	0x0040,	/* 0b0000000001000000 */	
-	0x1040,	/* 0b0001000001000000 */	
-	0x0800,	/* 0b0000100000000000 */	
-	0x0080,	/* 0b0000000010000000 */	
-	0x0040,	/* 0b0000000001000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x000C, /* 0b0000000000001100 */
+	0x003C, /* 0b0000000000111100 */
+	0x00D0, /* 0b0000000011010000 */
+	0x0110, /* 0b0000000100010000 */
+	0x0220, /* 0b0000001000100000 */
+	0x0440, /* 0b0000010001000000 */
+	0x0040, /* 0b0000000001000000 */
+	0x1040, /* 0b0001000001000000 */
+	0x0800, /* 0b0000100000000000 */
+	0x0080, /* 0b0000000010000000 */
+	0x0040, /* 0b0000000001000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
 
 	/* BITPLANE 1 */
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x000C,	/* 0b0000000000001100 */	
-	0x003C,	/* 0b0000000000111100 */	
-	0x00D0,	/* 0b0000000011010000 */	
-	0x0110,	/* 0b0000000100010000 */	
-	0x1E20,	/* 0b0001111000100000 */	
-	0x3F40,	/* 0b0011111101000000 */	
-	0x3EF0,	/* 0b0011111011110000 */	
-	0x3DF8,	/* 0b0011110111111000 */	
-	0x3DF8,	/* 0b0011110111111000 */	
-	0x1DF8,	/* 0b0001110111111000 */	
-	0x01F8,	/* 0b0000000111111000 */	
-	0x00F0,	/* 0b0000000011110000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x000C, /* 0b0000000000001100 */
+	0x003C, /* 0b0000000000111100 */
+	0x00D0, /* 0b0000000011010000 */
+	0x0110, /* 0b0000000100010000 */
+	0x1E20, /* 0b0001111000100000 */
+	0x3F40, /* 0b0011111101000000 */
+	0x3EF0, /* 0b0011111011110000 */
+	0x3DF8, /* 0b0011110111111000 */
+	0x3DF8, /* 0b0011110111111000 */
+	0x1DF8, /* 0b0001110111111000 */
+	0x01F8, /* 0b0000000111111000 */
+	0x00F0, /* 0b0000000011110000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
 
 	/* BITPLANE 2 */
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x000C,	/* 0b0000000000001100 */	
-	0x003C,	/* 0b0000000000111100 */	
-	0x00D0,	/* 0b0000000011010000 */	
-	0x0110,	/* 0b0000000100010000 */	
-	0x0220,	/* 0b0000001000100000 */	
-	0x0440,	/* 0b0000010001000000 */	
-	0x0040,	/* 0b0000000001000000 */	
-	0x0040,	/* 0b0000000001000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */	
-	0x0000,	/* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x000C, /* 0b0000000000001100 */
+	0x003C, /* 0b0000000000111100 */
+	0x00D0, /* 0b0000000011010000 */
+	0x0110, /* 0b0000000100010000 */
+	0x0220, /* 0b0000001000100000 */
+	0x0440, /* 0b0000010001000000 */
+	0x0040, /* 0b0000000001000000 */
+	0x0040, /* 0b0000000001000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
+	0x0000, /* 0b0000000000000000 */
 };
 
-struct Image iCherry = 
+struct Image iCherry =
 {
 	0, 0,
 	16, 16, 3,
@@ -748,19 +746,17 @@ struct Image iCherry =
 #define STAGEY 176
 
 /* The X positions for each of the 7 stage images left to right. */
-SHORT stageX[7] = 
+SHORT stageX[7] =
 {
-	192,208,224,240,256,272,288
+	192, 208, 224, 240, 256, 272, 288
 };
 
 /**
  * @brief Draw the stage fruits, given a stage number.
  * @param stage #
  */
-drawStage(stage)
-int stage;
-{
-	int i=0;
+int drawStage(const int stage) {
+	int i = 0;
 	struct Image *img[7];
 
 	/* Exit if no window rastport */
@@ -768,192 +764,191 @@ int stage;
 		return FALSE;
 
 	/* Clear pointers to struct Images */
-	for (i=0;i<7;i++)
+	for (i = 0; i < 7; i++)
 		img[i] = NULL;
 
 	/* Clear the stage fruit area */
-	SetAPen(wPacMan->RPort,0);
-	RectFill(wPacMan->RPort,stageX[6],STAGEY,stageX[0]+16,STAGEY+16);
+	SetAPen(wPacMan->RPort, 0);
+	RectFill(wPacMan->RPort, stageX[6],STAGEY, stageX[0] + 16,STAGEY + 16);
 
 	/* Set up pointers to images */
-	switch(stage)
-	{
+	switch (stage) {
 		case 1:
-			img[0]=&iEmpty;
-			img[1]=&iEmpty;
-			img[2]=&iEmpty;
-			img[3]=&iEmpty;
-			img[4]=&iEmpty;
-			img[5]=&iEmpty;
-			img[6]=&iCherry;
+			img[0] = &iEmpty;
+			img[1] = &iEmpty;
+			img[2] = &iEmpty;
+			img[3] = &iEmpty;
+			img[4] = &iEmpty;
+			img[5] = &iEmpty;
+			img[6] = &iCherry;
 			break;
 		case 2:
-			img[0]=&iEmpty;
-			img[1]=&iEmpty;
-			img[2]=&iEmpty;
-			img[3]=&iEmpty;
-			img[4]=&iEmpty;
-			img[5]=&iStrawberry;
-			img[6]=&iCherry;
+			img[0] = &iEmpty;
+			img[1] = &iEmpty;
+			img[2] = &iEmpty;
+			img[3] = &iEmpty;
+			img[4] = &iEmpty;
+			img[5] = &iStrawberry;
+			img[6] = &iCherry;
 			break;
 		case 3:
-			img[0]=&iEmpty;
-			img[1]=&iEmpty;
-			img[2]=&iEmpty;
-			img[3]=&iEmpty;
-			img[4]=&iOrange;
-			img[5]=&iStrawberry;
-			img[6]=&iCherry;
+			img[0] = &iEmpty;
+			img[1] = &iEmpty;
+			img[2] = &iEmpty;
+			img[3] = &iEmpty;
+			img[4] = &iOrange;
+			img[5] = &iStrawberry;
+			img[6] = &iCherry;
 			break;
 		case 4:
-			img[0]=&iEmpty;
-			img[1]=&iEmpty;
-			img[2]=&iEmpty;
-			img[3]=&iOrange;
-			img[4]=&iOrange;
-			img[5]=&iStrawberry;
-			img[6]=&iCherry;
+			img[0] = &iEmpty;
+			img[1] = &iEmpty;
+			img[2] = &iEmpty;
+			img[3] = &iOrange;
+			img[4] = &iOrange;
+			img[5] = &iStrawberry;
+			img[6] = &iCherry;
 			break;
 		case 5:
-			img[0]=&iEmpty;
-			img[1]=&iEmpty;
-			img[2]=&iApple;
-			img[3]=&iOrange;
-			img[4]=&iOrange;
-			img[5]=&iStrawberry;
-			img[6]=&iCherry;
+			img[0] = &iEmpty;
+			img[1] = &iEmpty;
+			img[2] = &iApple;
+			img[3] = &iOrange;
+			img[4] = &iOrange;
+			img[5] = &iStrawberry;
+			img[6] = &iCherry;
 			break;
 		case 6:
-			img[0]=&iEmpty;
-			img[1]=&iApple;
-			img[2]=&iApple;
-			img[3]=&iOrange;
-			img[4]=&iOrange;
-			img[5]=&iStrawberry;
-			img[6]=&iCherry;
+			img[0] = &iEmpty;
+			img[1] = &iApple;
+			img[2] = &iApple;
+			img[3] = &iOrange;
+			img[4] = &iOrange;
+			img[5] = &iStrawberry;
+			img[6] = &iCherry;
 			break;
 		case 7:
-			img[0]=&iMelon;
-			img[1]=&iApple;
-			img[2]=&iApple;
-			img[3]=&iOrange;
-			img[4]=&iOrange;
-			img[5]=&iStrawberry;
-			img[6]=&iCherry;
+			img[0] = &iMelon;
+			img[1] = &iApple;
+			img[2] = &iApple;
+			img[3] = &iOrange;
+			img[4] = &iOrange;
+			img[5] = &iStrawberry;
+			img[6] = &iCherry;
 			break;
 		case 8:
-			img[0]=&iMelon;
-			img[1]=&iMelon;
-			img[2]=&iApple;
-			img[3]=&iApple;
-			img[4]=&iOrange;
-			img[5]=&iOrange;
-			img[6]=&iStrawberry;
+			img[0] = &iMelon;
+			img[1] = &iMelon;
+			img[2] = &iApple;
+			img[3] = &iApple;
+			img[4] = &iOrange;
+			img[5] = &iOrange;
+			img[6] = &iStrawberry;
 			break;
 		case 9:
-			img[0]=&iGalaxian;
-			img[1]=&iMelon;
-			img[2]=&iMelon;
-			img[3]=&iApple;
-			img[4]=&iApple;
-			img[5]=&iOrange;
-			img[6]=&iOrange;
+			img[0] = &iGalaxian;
+			img[1] = &iMelon;
+			img[2] = &iMelon;
+			img[3] = &iApple;
+			img[4] = &iApple;
+			img[5] = &iOrange;
+			img[6] = &iOrange;
 			break;
 		case 10:
-			img[0]=&iGalaxian;
-			img[1]=&iGalaxian;
-			img[2]=&iMelon;
-			img[3]=&iMelon;
-			img[4]=&iApple;
-			img[5]=&iApple;
-			img[6]=&iOrange;
+			img[0] = &iGalaxian;
+			img[1] = &iGalaxian;
+			img[2] = &iMelon;
+			img[3] = &iMelon;
+			img[4] = &iApple;
+			img[5] = &iApple;
+			img[6] = &iOrange;
 			break;
 		case 11:
-			img[0]=&iBell;
-			img[1]=&iGalaxian;
-			img[2]=&iGalaxian;
-			img[3]=&iMelon;
-			img[4]=&iMelon;
-			img[5]=&iApple;
-			img[6]=&iApple;
+			img[0] = &iBell;
+			img[1] = &iGalaxian;
+			img[2] = &iGalaxian;
+			img[3] = &iMelon;
+			img[4] = &iMelon;
+			img[5] = &iApple;
+			img[6] = &iApple;
 			break;
 		case 12:
-			img[0]=&iBell;
-			img[1]=&iBell;
-			img[2]=&iGalaxian;
-			img[3]=&iGalaxian;
-			img[4]=&iMelon;
-			img[5]=&iMelon;
-			img[6]=&iApple;
+			img[0] = &iBell;
+			img[1] = &iBell;
+			img[2] = &iGalaxian;
+			img[3] = &iGalaxian;
+			img[4] = &iMelon;
+			img[5] = &iMelon;
+			img[6] = &iApple;
 			break;
 		case 13:
-			img[0]=&iKey;
-			img[1]=&iBell;
-			img[2]=&iBell;
-			img[3]=&iGalaxian;
-			img[4]=&iGalaxian;
-			img[5]=&iMelon;
-			img[6]=&iMelon;
+			img[0] = &iKey;
+			img[1] = &iBell;
+			img[2] = &iBell;
+			img[3] = &iGalaxian;
+			img[4] = &iGalaxian;
+			img[5] = &iMelon;
+			img[6] = &iMelon;
 			break;
 		case 14:
-			img[0]=&iKey;
-			img[1]=&iKey;
-			img[2]=&iBell;
-			img[3]=&iBell;
-			img[4]=&iGalaxian;
-			img[5]=&iGalaxian;
-			img[6]=&iMelon;
+			img[0] = &iKey;
+			img[1] = &iKey;
+			img[2] = &iBell;
+			img[3] = &iBell;
+			img[4] = &iGalaxian;
+			img[5] = &iGalaxian;
+			img[6] = &iMelon;
 			break;
 		case 15:
-			img[0]=&iKey;
-			img[1]=&iKey;
-			img[2]=&iKey;
-			img[3]=&iBell;
-			img[4]=&iBell;
-			img[5]=&iGalaxian;
-			img[6]=&iGalaxian;
+			img[0] = &iKey;
+			img[1] = &iKey;
+			img[2] = &iKey;
+			img[3] = &iBell;
+			img[4] = &iBell;
+			img[5] = &iGalaxian;
+			img[6] = &iGalaxian;
 			break;
 		case 16:
-			img[0]=&iKey;
-			img[1]=&iKey;
-			img[2]=&iKey;
-			img[3]=&iKey;
-			img[4]=&iBell;
-			img[5]=&iBell;
-			img[6]=&iGalaxian;
+			img[0] = &iKey;
+			img[1] = &iKey;
+			img[2] = &iKey;
+			img[3] = &iKey;
+			img[4] = &iBell;
+			img[5] = &iBell;
+			img[6] = &iGalaxian;
 			break;
 		case 17:
-			img[0]=&iKey;
-			img[1]=&iKey;
-			img[2]=&iKey;
-			img[3]=&iKey;
-			img[4]=&iKey;
-			img[5]=&iBell;
-			img[6]=&iBell;
+			img[0] = &iKey;
+			img[1] = &iKey;
+			img[2] = &iKey;
+			img[3] = &iKey;
+			img[4] = &iKey;
+			img[5] = &iBell;
+			img[6] = &iBell;
 			break;
 		case 18:
-			img[0]=&iKey;
-			img[1]=&iKey;
-			img[2]=&iKey;
-			img[3]=&iKey;
-			img[4]=&iKey;
-			img[5]=&iKey;
-			img[6]=&iBell;
+			img[0] = &iKey;
+			img[1] = &iKey;
+			img[2] = &iKey;
+			img[3] = &iKey;
+			img[4] = &iKey;
+			img[5] = &iKey;
+			img[6] = &iBell;
 			break;
 		default:
-			img[0]=&iKey;
-			img[1]=&iKey;
-			img[2]=&iKey;
-			img[3]=&iKey;
-			img[4]=&iKey;
-			img[5]=&iKey;
-			img[6]=&iKey;
+			img[0] = &iKey;
+			img[1] = &iKey;
+			img[2] = &iKey;
+			img[3] = &iKey;
+			img[4] = &iKey;
+			img[5] = &iKey;
+			img[6] = &iKey;
 			break;
 	}
 
 	/* And ask Intuition to draw em! */
-	for (i=0;i<7;i++)
-		DrawImage(wPacMan->RPort,img[i],stageX[i],STAGEY);
+	for (i = 0; i < 7; i++)
+		DrawImage(wPacMan->RPort, img[i], stageX[i],STAGEY);
 
 	return TRUE;
 }
@@ -962,18 +957,15 @@ int stage;
  * The test harness, display 24 stage iterations
  * Accompanied by delay
  */
-main()
-{
-	int i;
-
+int main() {
 	GfxBase = (struct GfxBase *)
-		OpenLibrary("graphics.library",0);
+			OpenLibrary("graphics.library", 0);
 
 	if (!GfxBase)
 		goto bye;
 
 	IntuitionBase = (struct IntuitionBase *)
-		OpenLibrary("intuition.library",0);
+			OpenLibrary("intuition.library", 0);
 
 	if (!IntuitionBase)
 		goto bye;
@@ -982,7 +974,7 @@ main()
 	AddFont(&Arcade8Font);
 
 	nsPacMan.Font = &taFont;
-	
+
 	sPacMan = OpenScreen(&nsPacMan);
 	if (!sPacMan)
 		goto bye;
@@ -992,10 +984,9 @@ main()
 	if (!wPacMan)
 		goto bye;
 
-	LoadRGB4(&sPacMan->ViewPort,colorTable,16);
+	LoadRGB4(&sPacMan->ViewPort, colorTable, 16);
 
-	for (i=1;i<24;i++)
-	{
+	for (int i = 1; i < 24; i++) {
 		drawStage(i);
 		Delay(100);
 	}
@@ -1012,8 +1003,8 @@ bye:
 		CloseScreen(sPacMan);
 
 	if (IntuitionBase)
-		CloseLibrary(IntuitionBase);
+		CloseLibrary((struct Library *) IntuitionBase);
 
 	if (GfxBase)
-		CloseLibrary(GfxBase);
+		CloseLibrary((struct Library *) GfxBase);
 }

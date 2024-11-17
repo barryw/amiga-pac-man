@@ -6,43 +6,32 @@
  * @license GPL v. 3, see LICENSE for details.
  */
 
+#include <clib/alib_protos.h>
+#include <clib/intuition_protos.h>
+#include <clib/dos_protos.h>
+#include <clib/graphics_protos.h>
+#include <clib/exec_protos.h>
 #include <exec/types.h>
 #include <exec/nodes.h>
 #include <exec/lists.h>
-#include <exec/memory.h>
-#include <exec/interrupts.h>
 #include <exec/ports.h>
-#include <exec/libraries.h>
 #include <exec/tasks.h>
-#include <exec/io.h>
-#include <exec/devices.h>
 #include <devices/timer.h>
 #include <graphics/gfx.h>
 #include <graphics/gfxbase.h>
 #include <graphics/gels.h>
 #include <intuition/intuition.h>
 
-#include "font.h"
-#include "MazeBorders.h"
+#include "../font.h"
+#include "../MazeBorders.h"
 
 struct GfxBase *GfxBase;
 struct IntuitionBase *IntuitionBase;
-
-extern struct MsgPort *CreatePort();
-extern struct IORequest *CreateExtIO();
-extern struct Task *CreateTask();
-
-/** The Test Harness *******************************************************/
-
-struct Screen *OpenScreen();
-struct Window *OpenWindow();
-
 struct Task *task;
-
 struct Screen *sPacMan;
 struct Window *wPacMan;
 
-struct NewScreen nsPacMan = 
+struct NewScreen nsPacMan =
 {
 	0, 0,
 	320, 200, 4,
@@ -54,19 +43,19 @@ struct NewScreen nsPacMan =
 	NULL
 };
 
-struct NewWindow nwPacMan = 
+struct NewWindow nwPacMan =
 {
 	0, 0,
 	320, 200,
 	0, 1,
 	NULL,
-	BORDERLESS|BACKDROP,
+	BORDERLESS | BACKDROP,
 	NULL,
 	NULL,
 	"PAC-MAN(tm)",
 	NULL,
 	NULL,
-	320,200,320,200,
+	320, 200, 320, 200,
 	CUSTOMSCREEN
 };
 
@@ -77,30 +66,30 @@ struct TextAttr taFont = {
 	FPF_DESIGNED
 };
 
-USHORT colorTable[16] = 
+USHORT colorTable[16] =
 {
-	0x000,		/* 0: Black */
-	0xFF0,		/* 1: Yellow */
-	0xF00,		/* 2: Light Red */
-	0xFFF,		/* 3: White */
-	0x00F,		/* 4: Light Blue */
-	0xF0F,		/* 5: Light Magenta */
-	0x0FF,		/* 6: Light Cyan */
-	0x770,		/* 7: Dark Yellow (pale orange?) */
-	0x0F0,		/* 8: Light Green */
-	0xFA0,		/* 9: Light Orange */
-	0xFEF,		/* A: Pinky white */
-	0xFCB,		/* B: Power Pellet */
-	0x0FF,		/* C: Light Cyan */
-	0xF00,		/* D: Light Red */
-	0xF0F,		/* E: Light Magenta */
-	0xFFF,		/* F: White */
+	0x000, /* 0: Black */
+	0xFF0, /* 1: Yellow */
+	0xF00, /* 2: Light Red */
+	0xFFF, /* 3: White */
+	0x00F, /* 4: Light Blue */
+	0xF0F, /* 5: Light Magenta */
+	0x0FF, /* 6: Light Cyan */
+	0x770, /* 7: Dark Yellow (pale orange?) */
+	0x0F0, /* 8: Light Green */
+	0xFA0, /* 9: Light Orange */
+	0xFEF, /* A: Pinky white */
+	0xFCB, /* B: Power Pellet */
+	0x0FF, /* C: Light Cyan */
+	0xF00, /* D: Light Red */
+	0xF0F, /* E: Light Magenta */
+	0xFFF, /* F: White */
 };
 
 struct Bob pacBob;
 struct VSprite pacVSprite;
 
-USHORT bmBlinky[] = 
+USHORT bmBlinky[] =
 {
 	/* BITPLANE 0 */
 	0x0000, /* 0000000000000000 */
@@ -180,22 +169,21 @@ struct VSprite dummySpriteA, dummySpriteB;
 
 WORD pacSaveBuffer[512];
 
-GELBOBTask()
-{
-	int i=0;
+void GELBOBTask() {
+	int i = 0;
 
 	pacBob.BobVSprite = &pacVSprite;
 	pacVSprite.VSBob = &pacBob;
 
-	pacVSprite.Height = 16;      /* 16 lines          */
-	pacVSprite.Width = 1;        /* 1 word, 16 pixels */
-	pacVSprite.Depth = 3;        /* 8 colors          */
+	pacVSprite.Height = 16; /* 16 lines          */
+	pacVSprite.Width = 1; /* 1 word, 16 pixels */
+	pacVSprite.Depth = 3; /* 8 colors          */
 	pacVSprite.PlanePick = 0x07; /* 3 bitplanes       */
 	pacVSprite.ImageData = bmBlinky;
 	pacBob.ImageShadow = smBlinky;
 	pacVSprite.X = 0;
 	pacVSprite.Y = 100;
-	pacBob.SaveBuffer = &pacSaveBuffer;
+	pacBob.SaveBuffer = (signed short *) &pacSaveBuffer;
 	pacBob.Flags = SAVEBACK | OVERLAY;
 	pacVSprite.Flags = SAVEBACK | OVERLAY;
 
@@ -208,10 +196,9 @@ GELBOBTask()
 	/* Optimize by sorting only once here */
 	SortGList(wPacMan->RPort);
 
-	for (i=0;i<240;i++)
-	{
+	for (i = 0; i < 240; i++) {
 		pacVSprite.X++;
-		DrawGList(wPacMan->RPort,&sPacMan->ViewPort);
+		DrawGList(wPacMan->RPort, &sPacMan->ViewPort);
 		WaitTOF();
 	}
 
@@ -220,16 +207,15 @@ GELBOBTask()
 
 /* The Test Harness ******************************************************/
 
-main()
-{
+int main() {
 	GfxBase = (struct GfxBase *)
-		OpenLibrary("graphics.library",0);
+			OpenLibrary("graphics.library", 0);
 
 	if (!GfxBase)
 		goto bye;
 
 	IntuitionBase = (struct IntuitionBase *)
-		OpenLibrary("intuition.library",0);
+			OpenLibrary("intuition.library", 0);
 
 	if (!IntuitionBase)
 		goto bye;
@@ -238,7 +224,7 @@ main()
 	AddFont(&Arcade8Font);
 
 	nsPacMan.Font = &taFont;
-	
+
 	sPacMan = OpenScreen(&nsPacMan);
 	if (!sPacMan)
 		goto bye;
@@ -250,14 +236,14 @@ main()
 	if (!wPacMan)
 		goto bye;
 
-	SetRast(wPacMan->RPort,0);
+	SetRast(wPacMan->RPort, 0);
 
-	DrawBorder(wPacMan->RPort,&boMaze,0,7);
+	DrawBorder(wPacMan->RPort, &boMaze, 0, 7);
 
-	task = CreateTask("gelbob.task",127,&GELBOBTask,1000);
-	
+	task = CreateTask("gelbob.task", 127, GELBOBTask, 1000);
+
 	Delay(600);
-	
+
 bye:
 	if (task)
 		DeleteTask(task);
@@ -271,8 +257,8 @@ bye:
 		CloseScreen(sPacMan);
 
 	if (IntuitionBase)
-		CloseLibrary(IntuitionBase);
+		CloseLibrary((struct Library *) IntuitionBase);
 
 	if (GfxBase)
-		CloseLibrary(GfxBase);
+		CloseLibrary((struct Library *) GfxBase);
 }

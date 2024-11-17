@@ -5,11 +5,9 @@
  * @license GPL v. 3, see license.md for details.
  */
 
+#include <clib/alib_protos.h>
+#include <clib/exec_protos.h>
 #include <exec/types.h>
-#include <exec/memory.h>
-#include <hardware/custom.h>
-#include <hardware/dmabits.h>
-#include <libraries/dos.h>
 #include <devices/audio.h>
 #include "waveforms.h"
 
@@ -26,107 +24,97 @@
 struct IOAudio *audioIOB = 0;
 struct MsgPort *port = 0;
 
-UBYTE allocationMap[] = 
+UBYTE allocationMap[] =
 {
-	3,5,10,12
+	3, 5, 10, 12
 };
 
 UBYTE deviceOpened = FALSE;
 
-extern struct MsgPort *CreatePort();
 
 /**
  * @brief Initialize sound for playback
  */
-init()
-{
-    deviceOpened = FALSE;
+int init() {
+	deviceOpened = FALSE;
 
-    /* Create our reply port. */
-    port = (struct MsgPort *)CreatePort(NULL);
-    if (!port)
-    {
-	return FALSE;
-    }
+	/* Create our reply port. */
+	port = CreatePort(NULL, NULL);
+	if (!port) {
+		return FALSE;
+	}
 
-    /* Create our audio I/O block */
-    audioIOB = (struct IOAudio *)
-	CreateExtIO(port, sizeof(struct IOAudio));
-    if (!audioIOB)
-    {
-	return FALSE;
-    }
+	/* Create our audio I/O block */
+	audioIOB = (struct IOAudio *) CreateExtIO(port, sizeof(struct IOAudio));
+	if (!audioIOB) {
+		return FALSE;
+	}
 
-    /* setup audio block with priority and allocation map */
-    /* This gets sent as part of OpenDevice.              */
-    audioIOB->ioa_Request.io_Message.mn_Node.ln_Pri = PRIORITY;
-    audioIOB->ioa_Data = allocationMap;
-    audioIOB->ioa_Length = sizeof(allocationMap);
-    
-    if (OpenDevice(AUDIONAME, 0, audioIOB, 0)) /* 0 = success */
-    {
-	return FALSE;
-    }
-    else
+	/* setup audio block with priority and allocation map */
+	/* This gets sent as part of OpenDevice.              */
+	audioIOB->ioa_Request.io_Message.mn_Node.ln_Pri = PRIORITY;
+	audioIOB->ioa_Data = allocationMap;
+	audioIOB->ioa_Length = sizeof(allocationMap);
+
+	if (OpenDevice(AUDIONAME, 0, (struct IORequest *) audioIOB, 0)) /* 0 = success */
+	{
+		return FALSE;
+	}
+
 	deviceOpened = TRUE;
 
-    return TRUE;
+	return TRUE;
 }
 
 /**
  * @brief Do each wsg
  */
-do_wsg()
-{
-    int i=0;
+int do_wsg() {
+	int i = 0;
 
-    if (!deviceOpened)
-	return FALSE;
+	if (!deviceOpened)
+		return FALSE;
 
-    for (i=0;i<8;i++)
-    {
-	/* Setup I/O block to write to audio device */
-    	audioIOB->ioa_Request.io_Command = CMD_WRITE;
-    	audioIOB->ioa_Request.io_Flags = ADIOF_PERVOL;
-    	audioIOB->ioa_Data = waveforms[i];
-    	audioIOB->ioa_Length = WAVEFORM_SIZE;
-    	audioIOB->ioa_Period = PERIODSIZE;
-    	audioIOB->ioa_Volume = MAXVOLUME;
-    	audioIOB->ioa_Cycles = 512; /* play waveform for a bit */
-	BeginIO(audioIOB);
-	WaitIO(audioIOB);
-    }
+	for (i = 0; i < 8; i++) {
+		/* Setup I/O block to write to audio device */
+		audioIOB->ioa_Request.io_Command = CMD_WRITE;
+		audioIOB->ioa_Request.io_Flags = ADIOF_PERVOL;
+		audioIOB->ioa_Data = waveforms[i];
+		audioIOB->ioa_Length = WAVEFORM_SIZE;
+		audioIOB->ioa_Period = PERIODSIZE;
+		audioIOB->ioa_Volume = MAXVOLUME;
+		audioIOB->ioa_Cycles = 512; /* play waveform for a bit */
+		BeginIO((struct IORequest *) audioIOB);
+		WaitIO((struct IORequest *) audioIOB);
+	}
 
-    return TRUE;
+	return TRUE;
 }
 
 /**
  * @brief clean up
  */
-done()
-{
-    if (deviceOpened)
-	CloseDevice(audioIOB);
+int done() {
+	if (deviceOpened)
+		CloseDevice((struct IORequest *) audioIOB);
 
-    if (audioIOB)
-    {
-	DeleteExtIO(audioIOB);
-    }
+	if (audioIOB) {
+		DeleteExtIO((struct IORequest *) audioIOB);
+	}
 
-    if (port)
-	DeletePort(port);
+	if (port)
+		DeletePort(port);
 
-    return TRUE;
+	return TRUE;
 }
 
-main()
-{
-    if (!init())
+int main() {
+	if (!init())
+		done();
+
+	do_wsg();
+
 	done();
 
-    do_wsg();
-
-    done();
-
-    return 0;
+	return 0;
 }

@@ -6,86 +6,83 @@
  * @license GPL v. 3, see LICENSE for details.
  */
 
+#include <clib/alib_protos.h>
+#include <clib/intuition_protos.h>
+#include <clib/dos_protos.h>
+#include <clib/graphics_protos.h>
+#include <clib/exec_protos.h>
 #include <exec/types.h>
-#include <exec/memory.h>
 #include <exec/exec.h>
 #include <graphics/gfx.h>
 #include <graphics/gfxbase.h>
 #include <graphics/sprite.h>
 #include <intuition/intuition.h>
 
-#include "font.h"
+#include "../font.h"
+#include "../Colors.h"
 
 struct GfxBase *GfxBase;
 struct IntuitionBase *IntuitionBase;
-
-/** The Test Harness *******************************************************/
-
-struct Screen *OpenScreen();
-struct Window *OpenWindow();
-
 struct Screen *sPacMan;
 struct Window *wPacMan;
 
-struct NewScreen nsPacMan = 
-{
-	0, 0,
-	320, 200, 4,
-	0, 1,
-	SPRITES,
-	CUSTOMSCREEN,
-	NULL,
-	"PAC-MAN(tm)",
-	NULL
+struct NewScreen nsPacMan = {
+	.LeftEdge = 0, .TopEdge = 0,
+	.Width = 320, .Height = 200, .Depth = 4,
+	.DetailPen = 0, .BlockPen = 1,
+	.ViewModes = SPRITES,
+	.Type = CUSTOMSCREEN,
+	.Font = NULL,
+	.DefaultTitle = "PACMAN",
+	.Gadgets = NULL
 };
 
-struct NewWindow nwPacMan = 
-{
-	0, 0,
-	320, 200,
-	0, 1,
-	NULL,
-	ACTIVATE|BORDERLESS|BACKDROP,
-	NULL,
-	NULL,
-	"PAC-MAN(tm)",
-	NULL,
-	NULL,
-	320,200,320,200,
-	CUSTOMSCREEN
+struct NewWindow nwPacMan = {
+	.LeftEdge = 0, .TopEdge = 0,
+	.Width = 320, .Height = 200,
+	.DetailPen = 0, .BlockPen = 1,
+	.IDCMPFlags = NULL,
+	.Flags = ACTIVATE | BORDERLESS | BACKDROP,
+	.FirstGadget = NULL,
+	.CheckMark = NULL,
+	.Title = "PACMAN",
+	.Screen = NULL,
+	.BitMap = NULL,
+	.MinWidth = 320, .MinHeight = 200, .MaxWidth = 320, .MaxHeight = 200,
+	.Type = CUSTOMSCREEN
 };
 
 struct TextAttr taFont = {
-	"Arcade8.font",
-	8,
-	FS_NORMAL,
-	FPF_DESIGNED
+	.ta_Name = "Arcade8.font",
+	.ta_YSize = 8,
+	.ta_Style = FS_NORMAL,
+	.ta_Flags = FPF_DESIGNED
 };
 
-USHORT colorTable[] = 
+USHORT colorTable[] =
 {
-	0x000,		/* 0: Black */
-	0xFF0,		/* 1: Yellow */
-	0xF00,		/* 2: Light Red */
-	0xFFF,		/* 3: White */
-	0x00F,		/* 4: Light Blue */
-	0xF0F,		/* 5: Light Magenta */
-	0x0FF,		/* 6: Light Cyan */
-	0xF80,		/* 7: Dark Yellow (pale orange?) */
-	0x0F0,		/* 8: Light Green */
-	0xFA0,		/* 9: Light Orange */
-	0xFEF,		/* A: Pinky white */
-	0x0F0,		/* B: Light Green */
-	0x0FF,		/* C: Light Cyan */
-	0xF00,		/* D: Light Red */
-	0xF0F,		/* E: Light Magenta */
-	0xFFF,		/* F: White */
+	BLACK,
+	YELLOW,
+	LIGHT_RED,
+	WHITE,
+	LIGHT_BLUE,
+	LIGHT_MAGENTA,
+	LIGHT_CYAN,
+	DARK_YELLOW,
+	LIGHT_GREEN,
+	LIGHT_ORANGE,
+	PINKY_WHITE,
+	LIGHT_GREEN,
+	LIGHT_CYAN,
+	LIGHT_RED,
+	LIGHT_MAGENTA,
+	WHITE
 };
 
-/** 
+/**
  * Sprite bitmaps
  */
-UWORD pacman_right_0[] = 
+UWORD pacman_right_0[] =
 {
 	0, 0,
 	0x0000, 0x0000, /* 0000000000000000 */
@@ -107,7 +104,7 @@ UWORD pacman_right_0[] =
 	0, 0
 };
 
-UWORD pacman_right_1[] = 
+UWORD pacman_right_1[] =
 {
 	0, 0,
 	0x0000, 0x0000, /* 0000000000000000 */
@@ -129,7 +126,7 @@ UWORD pacman_right_1[] =
 	0, 0
 };
 
-UWORD pacman_right_2[]=
+UWORD pacman_right_2[] =
 {
 	0, 0,
 	0x0000, 0x0000, /* 0000000000000000 */
@@ -154,25 +151,24 @@ struct SimpleSprite pacSprite =
 {
 	pacman_right_0,
 	16,
-	64,64,
+	64, 64,
 	1
 };
 
 /**
  * The test harness, display PAC-MAN chomping his mouth, facing right.
  */
-main()
-{
-	SHORT spr, k, i, x;
+int main() {
+	SHORT spr = 0;
 
 	GfxBase = (struct GfxBase *)
-		OpenLibrary("graphics.library",0);
+			OpenLibrary("graphics.library", 0);
 
 	if (!GfxBase)
 		goto bye;
 
 	IntuitionBase = (struct IntuitionBase *)
-		OpenLibrary("intuition.library",0);
+			OpenLibrary("intuition.library", 0);
 
 	if (!IntuitionBase)
 		goto bye;
@@ -181,7 +177,7 @@ main()
 	AddFont(&Arcade8Font);
 
 	nsPacMan.Font = &taFont;
-	
+
 	sPacMan = OpenScreen(&nsPacMan);
 	if (!sPacMan)
 		goto bye;
@@ -194,35 +190,36 @@ main()
 		goto bye;
 
 	spr = GetSprite(&pacSprite, -1);
-	k = ((spr & 0x06)*2)+16;
+	if (spr < 0) goto bye;
+	const SHORT k = (spr & 0x06) * 2 + 16;
 
-	SetRGB4(&sPacMan->ViewPort,k+1,0x0F,0x0F,0x00);
-	SetRGB4(&sPacMan->ViewPort,k+2,0x0F,0x0F,0x00);
-	SetRGB4(&sPacMan->ViewPort,k+3,0x0F,0x0F,0x00);
-	SetRGB4(&sPacMan->ViewPort,k+4,0x0F,0x0F,0x00);
+	SetRGB4(&sPacMan->ViewPort, k + 1, 0x0F, 0x0F, 0x00);
+	SetRGB4(&sPacMan->ViewPort, k + 2, 0x0F, 0x0F, 0x00);
+	SetRGB4(&sPacMan->ViewPort, k + 3, 0x0F, 0x0F, 0x00);
+	SetRGB4(&sPacMan->ViewPort, k + 4, 0x0F, 0x0F, 0x00);
 
 	/* Set initial X position */
-	x=0;
+	SHORT x = 0;
 
-	for (i=0;i<128;i++)
-	{
-		ChangeSprite(&sPacMan->ViewPort,&pacSprite,&pacman_right_0);
-		MoveSprite(&sPacMan->ViewPort,&pacSprite,x++,100);
+	for (SHORT i = 0; i < 128; i++) {
+		ChangeSprite(&sPacMan->ViewPort, &pacSprite, (UWORD *) &pacman_right_0);
+		MoveSprite(&sPacMan->ViewPort, &pacSprite, x++, 100);
 		WaitTOF();
-		ChangeSprite(&sPacMan->ViewPort,&pacSprite,&pacman_right_1);
-		MoveSprite(&sPacMan->ViewPort,&pacSprite,x++,100);
+		ChangeSprite(&sPacMan->ViewPort, &pacSprite, (UWORD *) &pacman_right_1);
+		MoveSprite(&sPacMan->ViewPort, &pacSprite, x++, 100);
 		WaitTOF();
-		ChangeSprite(&sPacMan->ViewPort,&pacSprite,&pacman_right_2);
-		MoveSprite(&sPacMan->ViewPort,&pacSprite,x++,100);
+		ChangeSprite(&sPacMan->ViewPort, &pacSprite, (UWORD *) &pacman_right_2);
+		MoveSprite(&sPacMan->ViewPort, &pacSprite, x++, 100);
 		WaitTOF();
 	}
-	
-	MoveSprite(&sPacMan->ViewPort,&pacSprite,64,100);
 
-	Delay(600); 
+	MoveSprite(&sPacMan->ViewPort, &pacSprite, 64, 100);
+
+	//TimeDelay(UNIT_VBLANK, 10, 0);
+	Delay(600);
 
 bye:
-	if (spr>0)
+	if (spr > 0)
 		FreeSprite(spr);
 
 	RemFont(&Arcade8Font);
@@ -234,8 +231,8 @@ bye:
 		CloseScreen(sPacMan);
 
 	if (IntuitionBase)
-		CloseLibrary(IntuitionBase);
+		CloseLibrary((struct Library *) IntuitionBase);
 
 	if (GfxBase)
-		CloseLibrary(GfxBase);
+		CloseLibrary((struct Library *) GfxBase);
 }
