@@ -84,14 +84,14 @@ USHORT colorTable[16] =
 	0xFF0, /* 1: Yellow */
 	0xF00, /* 2: Light Red */
 	0xFFF, /* 3: White */
-	0x00F, /* 4: Light Blue */
-	0xF0F, /* 5: Light Magenta */
+	0x00C, /* 4: Light Blue */
+	0xFBF, /* 5: Light Magenta */
 	0x0FF, /* 6: Light Cyan */
 	0x770, /* 7: Dark Yellow (pale orange?) */
 	0x0F0, /* 8: Light Green */
 	0xFA0, /* 9: Light Orange */
 	0xFEF, /* A: Pinky white */
-	0xFCB, /* B: Power Pellet */
+	0xFAA, /* B: Power Pellet */
 	0x0FF, /* C: Light Cyan */
 	0xF00, /* D: Light Red */
 	0xF0F, /* E: Light Magenta */

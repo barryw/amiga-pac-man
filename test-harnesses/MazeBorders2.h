@@ -121,6 +121,9 @@ inline void DrawMaze(struct RastPort *rp) {
         Move(rp, combinedLines[i].x1, combinedLines[i].y1);
         Draw(rp, combinedLines[i].x2, combinedLines[i].y2);
     }
+
+    SetAPen(rp, 0x05);
+    RectFill(rp, 13 * TILE_SIZE + 1, 12 * TILE_SIZE + 5, 15 * TILE_SIZE - 1, 12 * TILE_SIZE + 6);
 }
 
 #endif //MAZEBORDERS2_H
