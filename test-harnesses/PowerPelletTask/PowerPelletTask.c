@@ -314,9 +314,13 @@ int main() {
 	// Set the drawing pen to a specific color(e.g., 2 = red, 1 = blue, etc.)
 	SetAPen(rp, 0xa);
 
+	RectFill(&sPacMan->RastPort, 0, 0, 28 * 7, 31 * 7);
+
+	SetAPen(&sPacMan->RastPort, 0x00);
+
 	for (int x = 0; x < 28; x++) {
 		for (int y = 0; y < 31; y++) {
-			drawRectangle(rp, x, y);
+			RectFill(&sPacMan->RastPort, x * 7 + 1, y * 7 + 1, x * 7 + 6, y * 7 + 6);
 		}
 	}
 
