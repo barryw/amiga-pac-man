@@ -39,7 +39,6 @@ Line leftSideLines[] = {
     {0 * TILE_SIZE + 2, 30 * TILE_SIZE + 6, 0 * TILE_SIZE + 3, 30 * TILE_SIZE + 6},
     {0 * TILE_SIZE + 4, 31 * TILE_SIZE, 14 * TILE_SIZE, 31 * TILE_SIZE},
 
-
     // Inner line
     {0, 13 * TILE_SIZE + 3, 4 * TILE_SIZE + 1, 13 * TILE_SIZE + 3},
     {4 * TILE_SIZE + 2, 13 * TILE_SIZE + 2, 4 * TILE_SIZE + 2, 13 * TILE_SIZE + 2},
@@ -58,6 +57,15 @@ Line leftSideLines[] = {
     {0 * TILE_SIZE + 4, 19 * TILE_SIZE + 4, 0 * TILE_SIZE + 4, 19 * TILE_SIZE + 4},
     {0 * TILE_SIZE + 3, 19 * TILE_SIZE + 5, 0 * TILE_SIZE + 3, 24 * TILE_SIZE + 2},
     {0 * TILE_SIZE + 4, 24 * TILE_SIZE + 3, 0 * TILE_SIZE + 4, 24 * TILE_SIZE + 3},
+    {0 * TILE_SIZE + 5, 24 * TILE_SIZE + 4, 2 * TILE_SIZE + 1, 24 * TILE_SIZE + 4},
+    {2 * TILE_SIZE + 2, 24 * TILE_SIZE + 5, 2 * TILE_SIZE + 2, 24 * TILE_SIZE + 5},
+    {2 * TILE_SIZE + 3, 24 * TILE_SIZE + 6, 2 * TILE_SIZE + 3, 24 * TILE_SIZE + 8},
+    {2 * TILE_SIZE + 2, 24 * TILE_SIZE + 9, 2 * TILE_SIZE + 2, 24 * TILE_SIZE + 9},
+    {2 * TILE_SIZE + 1, 25 * TILE_SIZE + 3, 0 * TILE_SIZE + 5, 25 * TILE_SIZE + 3},
+    {0 * TILE_SIZE + 4, 25 * TILE_SIZE + 4, 0 * TILE_SIZE + 4, 25 * TILE_SIZE + 4},
+    {0 * TILE_SIZE + 3, 25 * TILE_SIZE + 5, 0 * TILE_SIZE + 3, 30 * TILE_SIZE + 2},
+    {0 * TILE_SIZE + 4, 30 * TILE_SIZE + 3, 0 * TILE_SIZE + 4, 30 * TILE_SIZE + 3},
+    {0 * TILE_SIZE + 5, 30 * TILE_SIZE + 4, 14 * TILE_SIZE, 30 * TILE_SIZE + 4},
 };
 
 int numLeftLines = sizeof(leftSideLines) / sizeof(Line);
