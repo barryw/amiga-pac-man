@@ -195,19 +195,19 @@ int main() {
 	struct RastPort *rp = &sPacMan->RastPort;
 
 	// Set the drawing pen to a specific color(e.g., 2 = red, 1 = blue, etc.)
-	// SetAPen(rp, 0xa);
-	//
-	// RectFill(&sPacMan->RastPort, 0, 0, 28 * 7, 31 * 7);
-	//
-	// SetAPen(&sPacMan->RastPort, 0x00);
-	//
-	// for (int x = 0; x < 28; x++) {
-	// 	for (int y = 0; y < 31; y++) {
-	// 		RectFill(&sPacMan->RastPort, x * 7 + 1, y * 7 + 1, x * 7 + 6, y * 7 + 6);
-	// 	}
-	// }
+	SetAPen(rp, 0xa);
 
-	DrawMaze(&sPacMan->RastPort);
+	RectFill(rp, 0, 0, 28 * 7, 31 * 7);
+
+	SetAPen(rp, 0x00);
+
+	for (int x = 0; x < 28; x++) {
+		for (int y = 0; y < 31; y++) {
+			RectFill(rp, x * 7 + 1, y * 7 + 1, x * 7 + 6, y * 7 + 6);
+		}
+	}
+
+	DrawMaze(rp);
 
 	DrawImage(wPacMan->RPort, &iPellet, 1 * 7 + 1, 3 * 7 + 1);
 	DrawImage(wPacMan->RPort, &iPellet, 26 * 7 + 1, 3 * 7 + 1);
