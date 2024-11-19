@@ -57,7 +57,11 @@ Line leftSideLines[] = {
     {0 * TILE_SIZE + 4, 10 * TILE_SIZE - 4, 0 * TILE_SIZE + 4, 10 * TILE_SIZE - 4},
     {0 * TILE_SIZE + 3, 10 * TILE_SIZE - 5, 0 * TILE_SIZE + 3, 0 * TILE_SIZE + 5},
     {0 * TILE_SIZE + 4, 0 * TILE_SIZE + 4, 0 * TILE_SIZE + 4, 0 * TILE_SIZE + 4},
-    {0 * TILE_SIZE + 5, 0 * TILE_SIZE + 3, 14 * TILE_SIZE, 0 * TILE_SIZE + 3},
+    {0 * TILE_SIZE + 5, 0 * TILE_SIZE + 3, 14 * TILE_SIZE - 5, 0 * TILE_SIZE + 3},
+    {14 * TILE_SIZE - 5, 0 * TILE_SIZE + 3, 14 * TILE_SIZE - 3, 0 * TILE_SIZE + 5},
+    {14 * TILE_SIZE - 3, 0 * TILE_SIZE + 5, 14 * TILE_SIZE - 3, 4 * TILE_SIZE + 1},
+    {14 * TILE_SIZE - 3, 4 * TILE_SIZE + 1, 14 * TILE_SIZE - 1, 4 * TILE_SIZE + 3},
+    {14 * TILE_SIZE - 1, 4 * TILE_SIZE + 3, 14 * TILE_SIZE, 4 * TILE_SIZE + 3},
     {0 * TILE_SIZE, 16 * TILE_SIZE - 3, 5 * TILE_SIZE + 1, 16 * TILE_SIZE - 3},
     {5 * TILE_SIZE + 2, 16 * TILE_SIZE - 2, 5 * TILE_SIZE + 2, 16 * TILE_SIZE - 2},
     {5 * TILE_SIZE + 3, 16 * TILE_SIZE - 1, 5 * TILE_SIZE + 3, 19 * TILE_SIZE + 1},
@@ -75,6 +79,16 @@ Line leftSideLines[] = {
     {0 * TILE_SIZE + 3, 25 * TILE_SIZE + 5, 0 * TILE_SIZE + 3, 30 * TILE_SIZE + 2},
     {0 * TILE_SIZE + 4, 30 * TILE_SIZE + 3, 0 * TILE_SIZE + 4, 30 * TILE_SIZE + 3},
     {0 * TILE_SIZE + 5, 30 * TILE_SIZE + 4, 14 * TILE_SIZE, 30 * TILE_SIZE + 4},
+
+    // Top left box
+    {2 * TILE_SIZE + 6, 2 * TILE_SIZE + 3, 5 * TILE_SIZE + 1, 2 * TILE_SIZE + 3},
+    {5 * TILE_SIZE + 1, 2 * TILE_SIZE + 3, 5 * TILE_SIZE + 3, 2 * TILE_SIZE + 5},
+    {5 * TILE_SIZE + 3, 2 * TILE_SIZE + 5, 5 * TILE_SIZE + 3, 4 * TILE_SIZE + 1},
+    {5 * TILE_SIZE + 3, 4 * TILE_SIZE + 1, 5 * TILE_SIZE + 1, 4 * TILE_SIZE + 3},
+    {5 * TILE_SIZE + 1, 4 * TILE_SIZE + 3, 2 * TILE_SIZE + 6, 4 * TILE_SIZE + 3},
+    {2 * TILE_SIZE + 6, 4 * TILE_SIZE + 3, 2 * TILE_SIZE + 4, 4 * TILE_SIZE + 1},
+    {2 * TILE_SIZE + 4, 4 * TILE_SIZE + 1, 2 * TILE_SIZE + 4, 2 * TILE_SIZE + 5},
+    {2 * TILE_SIZE + 4, 2 * TILE_SIZE + 5, 2 * TILE_SIZE + 6, 2 * TILE_SIZE + 3},
 };
 
 int numLeftLines = sizeof(leftSideLines) / sizeof(Line);
@@ -122,6 +136,7 @@ inline void DrawMaze(struct RastPort *rp) {
         Draw(rp, combinedLines[i].x2, combinedLines[i].y2);
     }
 
+    // Draw the pink ghost house door
     SetAPen(rp, 0x05);
     RectFill(rp, 13 * TILE_SIZE + 1, 12 * TILE_SIZE + 5, 15 * TILE_SIZE - 1, 12 * TILE_SIZE + 6);
 }

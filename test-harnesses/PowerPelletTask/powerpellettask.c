@@ -197,22 +197,23 @@ int main() {
 	// Set the drawing pen to a specific color(e.g., 2 = red, 1 = blue, etc.)
 	SetAPen(rp, 0xa);
 
-	RectFill(rp, 0, 0, 28 * 7, 31 * 7);
+	RectFill(rp, 0, 0, 28 * TILE_SIZE, 31 * TILE_SIZE);
 
 	SetAPen(rp, 0x00);
 
 	for (int x = 0; x < 28; x++) {
 		for (int y = 0; y < 31; y++) {
-			RectFill(rp, x * 7 + 1, y * 7 + 1, x * 7 + 6, y * 7 + 6);
+			RectFill(rp, x * TILE_SIZE + 1, y * TILE_SIZE + 1, x * TILE_SIZE + TILE_SIZE - 1,
+			         y * TILE_SIZE + TILE_SIZE - 1);
 		}
 	}
 
 	DrawMaze(rp);
 
-	DrawImage(wPacMan->RPort, &iPellet, 1 * 7 + 1, 3 * 7 + 1);
-	DrawImage(wPacMan->RPort, &iPellet, 26 * 7 + 1, 3 * 7 + 1);
-	DrawImage(wPacMan->RPort, &iPellet, 1 * 7 + 1, 23 * 7 + 1);
-	DrawImage(wPacMan->RPort, &iPellet, 26 * 7 + 1, 23 * 7 + 1);
+	DrawImage(wPacMan->RPort, &iPellet, 1 * TILE_SIZE + 1, 3 * TILE_SIZE + 1);
+	DrawImage(wPacMan->RPort, &iPellet, 26 * TILE_SIZE + 1, 3 * TILE_SIZE + 1);
+	DrawImage(wPacMan->RPort, &iPellet, 1 * TILE_SIZE + 1, 23 * TILE_SIZE + 1);
+	DrawImage(wPacMan->RPort, &iPellet, 26 * TILE_SIZE + 1, 23 * TILE_SIZE + 1);
 
 	if (vbint) {
 		vbint->is_Node.ln_Type = NT_INTERRUPT;
