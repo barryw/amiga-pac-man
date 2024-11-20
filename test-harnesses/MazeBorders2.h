@@ -112,6 +112,27 @@ Line leftSideLines[] = {
     {2 * TILE_SIZE + 6, 22 * TILE_SIZE + 3, 2 * TILE_SIZE + 4, 22 * TILE_SIZE + 1},
     {2 * TILE_SIZE + 4, 22 * TILE_SIZE + 1, 2 * TILE_SIZE + 4, 22 * TILE_SIZE - 1},
     {2 * TILE_SIZE + 4, 22 * TILE_SIZE - 1, 2 * TILE_SIZE + 6, 21 * TILE_SIZE + 4},
+
+    // Top T
+    {7 * TILE_SIZE + 4, 6 * TILE_SIZE + 6, 7 * TILE_SIZE + 4, 13 * TILE_SIZE + 1},
+    {7 * TILE_SIZE + 4, 13 * TILE_SIZE + 1, 7 * TILE_SIZE + 6, 13 * TILE_SIZE + 3},
+    {7 * TILE_SIZE + 6, 13 * TILE_SIZE + 3, 8 * TILE_SIZE, 13 * TILE_SIZE + 3},
+    {8 * TILE_SIZE + 1, 13 * TILE_SIZE + 3, 8 * TILE_SIZE + 3, 13 * TILE_SIZE + 1},
+    {8 * TILE_SIZE + 3, 13 * TILE_SIZE + 1, 8 * TILE_SIZE + 3, 10 * TILE_SIZE + 5},
+    {8 * TILE_SIZE + 3, 10 * TILE_SIZE + 5, 8 * TILE_SIZE + 5, 10 * TILE_SIZE + 3},
+    {8 * TILE_SIZE + 5, 10 * TILE_SIZE + 3, 11 * TILE_SIZE + 1, 10 * TILE_SIZE + 3},
+    {11 * TILE_SIZE + 1, 10 * TILE_SIZE + 3, 11 * TILE_SIZE + 3, 10 * TILE_SIZE + 1},
+    {11 * TILE_SIZE + 3, 10 * TILE_SIZE + 1, 11 * TILE_SIZE + 3, 10 * TILE_SIZE - 1},
+    {11 * TILE_SIZE + 3, 10 * TILE_SIZE - 1, 11 * TILE_SIZE + 1, 10 * TILE_SIZE - 3},
+    {11 * TILE_SIZE + 1, 10 * TILE_SIZE - 3, 8 * TILE_SIZE + 5, 10 * TILE_SIZE - 3},
+    {8 * TILE_SIZE + 5, 10 * TILE_SIZE - 3, 8 * TILE_SIZE + 3, 10 * TILE_SIZE - 5},
+    {8 * TILE_SIZE + 3, 10 * TILE_SIZE - 5, 8 * TILE_SIZE + 3, 6 * TILE_SIZE + 6},
+    {8 * TILE_SIZE + 3, 6 * TILE_SIZE + 6, 8 * TILE_SIZE + 1, 6 * TILE_SIZE + 4},
+    {8 * TILE_SIZE + 1, 6 * TILE_SIZE + 4, 8 * TILE_SIZE - 1, 6 * TILE_SIZE + 4},
+    {8 * TILE_SIZE - 1, 6 * TILE_SIZE + 4, 8 * TILE_SIZE - 3, 6 * TILE_SIZE + 6},
+
+
+    // Bottom Misshapen T
 };
 
 int numLeftLines = sizeof(leftSideLines) / sizeof(Line);
