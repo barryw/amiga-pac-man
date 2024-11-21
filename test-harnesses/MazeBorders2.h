@@ -5,7 +5,7 @@
 #ifndef MAZEBORDERS2_H
 #define MAZEBORDERS2_H
 
-#define TILE_SIZE   7
+#define TILE_SIZE   8
 #define MAZE_TILES_WIDTH  28 // Maze width in tiles
 #define MAZE_TILES_HEIGHT 31 // Maze height in tiles
 #define MAZE_WIDTH  (MAZE_TILES_WIDTH * TILE_SIZE) // Maze width in pixels
