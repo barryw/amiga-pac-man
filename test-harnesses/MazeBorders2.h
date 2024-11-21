@@ -131,6 +131,23 @@ Line leftSideLines[] = {
     {8 * TILE_SIZE + 1, 6 * TILE_SIZE + 4, 8 * TILE_SIZE - 1, 6 * TILE_SIZE + 4},
     {8 * TILE_SIZE - 1, 6 * TILE_SIZE + 4, 8 * TILE_SIZE - 3, 6 * TILE_SIZE + 6},
 
+    // Weird bottom T
+    {2 * TILE_SIZE + 6, 27 * TILE_SIZE + 4, 7 * TILE_SIZE + 2, 27 * TILE_SIZE + 4},
+    {7 * TILE_SIZE + 2, 27 * TILE_SIZE + 4, 7 * TILE_SIZE + 4, 27 * TILE_SIZE + 2},
+    {7 * TILE_SIZE + 4, 27 * TILE_SIZE + 2, 7 * TILE_SIZE + 4, 25 * TILE_SIZE - 1},
+    {7 * TILE_SIZE + 4, 25 * TILE_SIZE - 1, 7 * TILE_SIZE + 6, 25 * TILE_SIZE - 3},
+    {7 * TILE_SIZE + 6, 25 * TILE_SIZE - 3, 7 * TILE_SIZE + 8, 25 * TILE_SIZE - 3},
+    {7 * TILE_SIZE + 8, 25 * TILE_SIZE - 3, 7 * TILE_SIZE + 10, 25 * TILE_SIZE - 1},
+    {7 * TILE_SIZE + 10, 25 * TILE_SIZE - 1, 7 * TILE_SIZE + 10, 27 * TILE_SIZE + 2},
+    {7 * TILE_SIZE + 10, 27 * TILE_SIZE + 2, 7 * TILE_SIZE + 12, 27 * TILE_SIZE + 4},
+    {7 * TILE_SIZE + 12, 27 * TILE_SIZE + 4, 11 * TILE_SIZE + 1, 27 * TILE_SIZE + 4},
+    {11 * TILE_SIZE + 1, 27 * TILE_SIZE + 4, 11 * TILE_SIZE + 3, 27 * TILE_SIZE + 6},
+    {11 * TILE_SIZE + 3, 27 * TILE_SIZE + 6, 11 * TILE_SIZE + 3, 27 * TILE_SIZE + 8},
+    {11 * TILE_SIZE + 3, 27 * TILE_SIZE + 8, 11 * TILE_SIZE + 1, 27 * TILE_SIZE + 10},
+    {11 * TILE_SIZE + 1, 27 * TILE_SIZE + 10, 2 * TILE_SIZE + 6, 27 * TILE_SIZE + 10},
+    {2 * TILE_SIZE + 6, 27 * TILE_SIZE + 10, 2 * TILE_SIZE + 4, 27 * TILE_SIZE + 8},
+    {2 * TILE_SIZE + 4, 27 * TILE_SIZE + 8, 2 * TILE_SIZE + 4, 27 * TILE_SIZE + 6},
+    {2 * TILE_SIZE + 4, 27 * TILE_SIZE + 6, 2 * TILE_SIZE + 6, 27 * TILE_SIZE + 4},
 
     // Bottom Misshapen T
 };

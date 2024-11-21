@@ -161,8 +161,6 @@ void __amigainterrupt BlinkPowerPelletInterrupt() {
 /* The Test Harness ******************************************************/
 
 int main() {
-	struct Interrupt *vbint = AllocMem(sizeof(struct Interrupt), MEMF_PUBLIC | MEMF_CLEAR);
-
 	GfxBase = (struct GfxBase *) OpenLibrary("graphics.library", 0);
 
 	if (!GfxBase)
@@ -208,6 +206,7 @@ int main() {
 	// 	}
 	// }
 
+	WaitBOVP(ViewPortAddress(wPacMan));
 	DrawMaze(rp);
 
 	DrawImage(wPacMan->RPort, &iPellet, 1 * TILE_SIZE + 1, 3 * TILE_SIZE + 1);
@@ -215,6 +214,7 @@ int main() {
 	DrawImage(wPacMan->RPort, &iPellet, 1 * TILE_SIZE + 1, 23 * TILE_SIZE + 1);
 	DrawImage(wPacMan->RPort, &iPellet, 26 * TILE_SIZE + 1, 23 * TILE_SIZE + 1);
 
+	struct Interrupt *vbint = AllocMem(sizeof(struct Interrupt), MEMF_PUBLIC | MEMF_CLEAR);
 	if (vbint) {
 		vbint->is_Node.ln_Type = NT_INTERRUPT;
 		vbint->is_Node.ln_Pri = -60;
@@ -234,8 +234,10 @@ int main() {
 	}
 
 bye:
-	RemIntServer(INTB_VERTB, vbint);
-	FreeMem(vbint, sizeof(struct Interrupt));
+	if (vbint) {
+		RemIntServer(INTB_VERTB, vbint);
+		FreeMem(vbint, sizeof(struct Interrupt));
+	}
 
 	if (task)
 		DeleteTask(task);
