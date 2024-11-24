@@ -26,7 +26,7 @@
 #include "../font.h"
 #include "../MazeBorders2.h"
 
-#define SCREEN_HEIGHT 256
+#define SCREEN_HEIGHT 250
 #define SCREEN_WIDTH 320
 
 struct GfxBase *GfxBase;
@@ -98,37 +98,43 @@ USHORT colorTable[16] =
     0xFFF, /* F: White */
 };
 
-UWORD bmPellet[] =
+__chip UWORD bmPellet[] =
 {
-    /* BITPLANE 0 */
-    0x7800, /* 0111100000000000 */
-    0xFC00, /* 1111110000000000 */
-    0xFC00, /* 1111110000000000 */
-    0xFC00, /* 1111110000000000 */
-    0xFC00, /* 1111110000000000 */
-    0x7800, /* 0111100000000000 */
+    // Bitplane 0
+    0x0000,
+    0x3800,
+    0x7c00,
+    0xfe00,
+    0xfe00,
+    0xfe00,
+    0x7c00,
+    0x3800,
 
-    /* BITPLANE 1 */
-    0x7800, /* 0111100000000000 */
-    0xFC00, /* 1111110000000000 */
-    0xFC00, /* 1111110000000000 */
-    0xFC00, /* 1111110000000000 */
-    0xFC00, /* 1111110000000000 */
-    0x7800, /* 0111100000000000 */
+    // Bitplane 1
+    0x0000,
+    0x3800,
+    0x7c00,
+    0xfe00,
+    0xfe00,
+    0xfe00,
+    0x7c00,
+    0x3800,
 
-    /* BITPLANE 3 */
-    0x7800, /* 0111100000000000 */
-    0xFC00, /* 1111110000000000 */
-    0xFC00, /* 1111110000000000 */
-    0xFC00, /* 1111110000000000 */
-    0xFC00, /* 1111110000000000 */
-    0x7800, /* 0111100000000000 */
+    // Bitplane 3
+    0x0000,
+    0x3800,
+    0x7c00,
+    0xfe00,
+    0xfe00,
+    0xfe00,
+    0x7c00,
+    0x3800,
 };
 
 struct Image iPellet =
 {
     0, 0,
-    6, 6, 4,
+    8, 8, 4,
     bmPellet,
     0x0B, 0x00
 };
@@ -187,7 +193,9 @@ int main() {
     if (!wPacMan)
         goto bye;
 
-    ClearPointer(wPacMan);
+    //ActivateWindow(wPacMan);
+    UWORD *emptyPointer = AllocMem(22 * sizeof(UWORD), MEMF_CHIP | MEMF_CLEAR);
+    SetPointer(wPacMan, emptyPointer, 0, 0, 0, 0);
     SetRast(wPacMan->RPort, 0);
 
     struct RastPort *rp = &sPacMan->RastPort;
@@ -209,10 +217,10 @@ int main() {
     WaitBOVP(ViewPortAddress(wPacMan));
     DrawMaze(rp);
 
-    DrawImage(wPacMan->RPort, &iPellet, 1 * TILE_SIZE + 1, 3 * TILE_SIZE + 1);
-    DrawImage(wPacMan->RPort, &iPellet, 26 * TILE_SIZE + 1, 3 * TILE_SIZE + 1);
-    DrawImage(wPacMan->RPort, &iPellet, 1 * TILE_SIZE + 1, 23 * TILE_SIZE + 1);
-    DrawImage(wPacMan->RPort, &iPellet, 26 * TILE_SIZE + 1, 23 * TILE_SIZE + 1);
+    DrawImage(rp, &iPellet, 1 * TILE_SIZE + 1, 3 * TILE_SIZE);
+    DrawImage(rp, &iPellet, 26 * TILE_SIZE + 1, 3 * TILE_SIZE);
+    DrawImage(rp, &iPellet, 1 * TILE_SIZE + 1, 23 * TILE_SIZE);
+    DrawImage(rp, &iPellet, 26 * TILE_SIZE + 1, 23 * TILE_SIZE);
 
     Move(rp, 11 * TILE_SIZE, 18 * TILE_SIZE - 1);
     SetAPen(rp, 0x01);
@@ -244,6 +252,9 @@ int main() {
     while ((msg = (struct IntuiMessage *) GetMsg(wPacMan->UserPort)) != NULL) {
         ReplyMsg((struct Message *) msg);
     }
+
+    ClearPointer(wPacMan);
+    FreeMem(emptyPointer, 22 * sizeof(UWORD));
 
 bye:
     if (vbint) {

@@ -30,20 +30,20 @@ Point halfT[] = {
 };
 
 Oval ovals[] = {
-    {{2 * TILE_SIZE + 4, 2 * TILE_SIZE + 4}, {5 * TILE_SIZE + 3, 4 * TILE_SIZE + 3}},
-    {{7 * TILE_SIZE + 4, 2 * TILE_SIZE + 4}, {11 * TILE_SIZE + 3, 4 * TILE_SIZE + 3}},
-    {{2 * TILE_SIZE + 4, 6 * TILE_SIZE + 4}, {5 * TILE_SIZE + 3, 7 * TILE_SIZE + 3}},
-    {{7 * TILE_SIZE + 4, 15 * TILE_SIZE + 4}, {8 * TILE_SIZE + 3, 19 * TILE_SIZE + 3}},
-    {{7 * TILE_SIZE + 4, 21 * TILE_SIZE + 4}, {11 * TILE_SIZE + 3, 22 * TILE_SIZE + 3}},
+    {{2 * TILE_SIZE + 4, 2 * TILE_SIZE + 4}, {5 * TILE_SIZE + 4, 4 * TILE_SIZE + 4}},
+    {{7 * TILE_SIZE + 4, 2 * TILE_SIZE + 4}, {11 * TILE_SIZE + 4, 4 * TILE_SIZE + 4}},
+    {{2 * TILE_SIZE + 4, 6 * TILE_SIZE + 4}, {5 * TILE_SIZE + 4, 7 * TILE_SIZE + 4}},
+    {{7 * TILE_SIZE + 4, 15 * TILE_SIZE + 4}, {8 * TILE_SIZE + 4, 19 * TILE_SIZE + 4}},
+    {{7 * TILE_SIZE + 4, 21 * TILE_SIZE + 4}, {11 * TILE_SIZE + 4, 22 * TILE_SIZE + 4}},
 };
 
 Line leftSideLines[] = {
     // Ghost House
     {11 * TILE_SIZE, 13 * TILE_SIZE, 13 * TILE_SIZE, 13 * TILE_SIZE},
-    {13 * TILE_SIZE, 13 * TILE_SIZE, 13 * TILE_SIZE, 13 * TILE_SIZE - 3},
-    {13 * TILE_SIZE, 13 * TILE_SIZE - 3, 11 * TILE_SIZE - 3, 13 * TILE_SIZE - 3},
-    {11 * TILE_SIZE - 3, 13 * TILE_SIZE - 3, 11 * TILE_SIZE - 3, 16 * TILE_SIZE + 3},
-    {11 * TILE_SIZE - 3, 16 * TILE_SIZE + 3, 14 * TILE_SIZE, 16 * TILE_SIZE + 3},
+    {13 * TILE_SIZE, 13 * TILE_SIZE, 13 * TILE_SIZE, 13 * TILE_SIZE - 4},
+    {13 * TILE_SIZE, 13 * TILE_SIZE - 4, 11 * TILE_SIZE - 4, 13 * TILE_SIZE - 4},
+    {11 * TILE_SIZE - 4, 13 * TILE_SIZE - 4, 11 * TILE_SIZE - 4, 16 * TILE_SIZE + 4},
+    {11 * TILE_SIZE - 4, 16 * TILE_SIZE + 4, 14 * TILE_SIZE, 16 * TILE_SIZE + 4},
     {11 * TILE_SIZE, 13 * TILE_SIZE, 11 * TILE_SIZE, 16 * TILE_SIZE},
     {11 * TILE_SIZE, 16 * TILE_SIZE, 14 * TILE_SIZE, 16 * TILE_SIZE},
 
@@ -62,26 +62,28 @@ Line leftSideLines[] = {
     {5 * TILE_SIZE - 1, 19 * TILE_SIZE, 0 * TILE_SIZE + 4, 19 * TILE_SIZE},
     {0 * TILE_SIZE + 2, 19 * TILE_SIZE + 1, 0 * TILE_SIZE + 3, 19 * TILE_SIZE + 1},
     {0 * TILE_SIZE + 1, 19 * TILE_SIZE + 2, 0 * TILE_SIZE + 1, 19 * TILE_SIZE + 3},
-    {0 * TILE_SIZE, 19 * TILE_SIZE + 4, 0 * TILE_SIZE, 30 * TILE_SIZE + 3},
-    {0 * TILE_SIZE + 1, 30 * TILE_SIZE + 4, 0 * TILE_SIZE + 1, 30 * TILE_SIZE + 5},
-    {0 * TILE_SIZE + 2, 30 * TILE_SIZE + 6, 0 * TILE_SIZE + 3, 30 * TILE_SIZE + 6},
+    {0 * TILE_SIZE, 19 * TILE_SIZE + 4, 0 * TILE_SIZE, 30 * TILE_SIZE + 4},
+    {0 * TILE_SIZE + 1, 30 * TILE_SIZE + 5, 0 * TILE_SIZE + 1, 30 * TILE_SIZE + 6},
+    {0 * TILE_SIZE + 2, 30 * TILE_SIZE + 7, 0 * TILE_SIZE + 3, 30 * TILE_SIZE + 7},
     {0 * TILE_SIZE + 4, 31 * TILE_SIZE, 14 * TILE_SIZE, 31 * TILE_SIZE},
 
-    // Inner line
-    {0, 13 * TILE_SIZE + 3, 5 * TILE_SIZE + 1, 13 * TILE_SIZE + 3},
-    {5 * TILE_SIZE + 2, 13 * TILE_SIZE + 2, 5 * TILE_SIZE + 2, 13 * TILE_SIZE + 2},
-    {5 * TILE_SIZE + 3, 13 * TILE_SIZE + 1, 5 * TILE_SIZE + 3, 10 * TILE_SIZE - 1},
-    {5 * TILE_SIZE + 2, 10 * TILE_SIZE - 2, 5 * TILE_SIZE + 2, 10 * TILE_SIZE - 2},
-    {5 * TILE_SIZE + 1, 10 * TILE_SIZE - 3, 0 * TILE_SIZE + 5, 10 * TILE_SIZE - 3},
-    {0 * TILE_SIZE + 4, 10 * TILE_SIZE - 4, 0 * TILE_SIZE + 4, 10 * TILE_SIZE - 4},
-    {0 * TILE_SIZE + 3, 10 * TILE_SIZE - 5, 0 * TILE_SIZE + 3, 0 * TILE_SIZE + 5},
-    {0 * TILE_SIZE + 4, 0 * TILE_SIZE + 4, 0 * TILE_SIZE + 4, 0 * TILE_SIZE + 4},
-    {0 * TILE_SIZE + 5, 0 * TILE_SIZE + 3, 14 * TILE_SIZE - 5, 0 * TILE_SIZE + 3},
-    {14 * TILE_SIZE - 5, 0 * TILE_SIZE + 3, 14 * TILE_SIZE - 3, 0 * TILE_SIZE + 5},
-    {14 * TILE_SIZE - 3, 0 * TILE_SIZE + 5, 14 * TILE_SIZE - 3, 4 * TILE_SIZE + 1},
-    {14 * TILE_SIZE - 3, 4 * TILE_SIZE + 1, 14 * TILE_SIZE - 1, 4 * TILE_SIZE + 3},
-    {14 * TILE_SIZE - 1, 4 * TILE_SIZE + 3, 14 * TILE_SIZE, 4 * TILE_SIZE + 3},
-    {0 * TILE_SIZE, 16 * TILE_SIZE - 3, 5 * TILE_SIZE + 1, 16 * TILE_SIZE - 3},
+    // Inner line upper half
+    {0 * TILE_SIZE, 13 * TILE_SIZE + 4, 5 * TILE_SIZE + 1, 13 * TILE_SIZE + 4},
+    {5 * TILE_SIZE + 2, 13 * TILE_SIZE + 4, 5 * TILE_SIZE + 4, 13 * TILE_SIZE + 2},
+    {5 * TILE_SIZE + 4, 13 * TILE_SIZE + 2, 5 * TILE_SIZE + 4, 10 * TILE_SIZE - 1},
+    {5 * TILE_SIZE + 4, 10 * TILE_SIZE - 2, 5 * TILE_SIZE + 2, 10 * TILE_SIZE - 4},
+    {5 * TILE_SIZE + 2, 10 * TILE_SIZE - 4, 0 * TILE_SIZE + 6, 10 * TILE_SIZE - 4},
+    {0 * TILE_SIZE + 6, 10 * TILE_SIZE - 4, 0 * TILE_SIZE + 4, 10 * TILE_SIZE - 6},
+    {0 * TILE_SIZE + 4, 10 * TILE_SIZE - 6, 0 * TILE_SIZE + 4, 0 * TILE_SIZE + 6},
+    {0 * TILE_SIZE + 4, 0 * TILE_SIZE + 6, 0 * TILE_SIZE + 6, 0 * TILE_SIZE + 4},
+    {0 * TILE_SIZE + 6, 0 * TILE_SIZE + 4, 14 * TILE_SIZE - 6, 0 * TILE_SIZE + 4},
+    {14 * TILE_SIZE - 6, 0 * TILE_SIZE + 4, 14 * TILE_SIZE - 4, 0 * TILE_SIZE + 6},
+    {14 * TILE_SIZE - 4, 0 * TILE_SIZE + 6, 14 * TILE_SIZE - 4, 4 * TILE_SIZE + 2},
+    {14 * TILE_SIZE - 4, 4 * TILE_SIZE + 2, 14 * TILE_SIZE - 2, 4 * TILE_SIZE + 4},
+    {14 * TILE_SIZE - 2, 4 * TILE_SIZE + 4, 14 * TILE_SIZE, 4 * TILE_SIZE + 4},
+
+    // Inner line lower half
+    {0 * TILE_SIZE, 16 * TILE_SIZE - 4, 5 * TILE_SIZE + 1, 16 * TILE_SIZE - 4},
     {5 * TILE_SIZE + 2, 16 * TILE_SIZE - 2, 5 * TILE_SIZE + 2, 16 * TILE_SIZE - 2},
     {5 * TILE_SIZE + 3, 16 * TILE_SIZE - 1, 5 * TILE_SIZE + 3, 19 * TILE_SIZE + 1},
     {5 * TILE_SIZE + 2, 19 * TILE_SIZE + 2, 5 * TILE_SIZE + 2, 19 * TILE_SIZE + 2},
@@ -279,7 +281,7 @@ inline void DrawMaze(struct RastPort *rp) {
 
     // Draw the pink ghost house door
     SetAPen(rp, 0x05);
-    RectFill(rp, 13 * TILE_SIZE + 1, 12 * TILE_SIZE + 5, 15 * TILE_SIZE - 1, 12 * TILE_SIZE + 6);
+    RectFill(rp, 13 * TILE_SIZE + 1, 12 * TILE_SIZE + 5, 15 * TILE_SIZE - 1, 12 * TILE_SIZE + 7);
 }
 
 #endif //MAZEBORDERS2_H
