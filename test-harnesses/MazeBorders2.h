@@ -84,71 +84,71 @@ Line leftSideLines[] = {
 
     // Inner line lower half
     {0 * TILE_SIZE, 16 * TILE_SIZE - 4, 5 * TILE_SIZE + 1, 16 * TILE_SIZE - 4},
-    {5 * TILE_SIZE + 2, 16 * TILE_SIZE - 2, 5 * TILE_SIZE + 2, 16 * TILE_SIZE - 2},
-    {5 * TILE_SIZE + 3, 16 * TILE_SIZE - 1, 5 * TILE_SIZE + 3, 19 * TILE_SIZE + 1},
-    {5 * TILE_SIZE + 2, 19 * TILE_SIZE + 2, 5 * TILE_SIZE + 2, 19 * TILE_SIZE + 2},
-    {5 * TILE_SIZE + 1, 19 * TILE_SIZE + 3, 0 * TILE_SIZE + 5, 19 * TILE_SIZE + 3},
-    {0 * TILE_SIZE + 4, 19 * TILE_SIZE + 4, 0 * TILE_SIZE + 4, 19 * TILE_SIZE + 4},
-    {0 * TILE_SIZE + 3, 19 * TILE_SIZE + 5, 0 * TILE_SIZE + 3, 24 * TILE_SIZE + 2},
-    {0 * TILE_SIZE + 4, 24 * TILE_SIZE + 3, 0 * TILE_SIZE + 4, 24 * TILE_SIZE + 3},
-    {0 * TILE_SIZE + 5, 24 * TILE_SIZE + 4, 2 * TILE_SIZE + 1, 24 * TILE_SIZE + 4},
-    {2 * TILE_SIZE + 2, 24 * TILE_SIZE + 5, 2 * TILE_SIZE + 2, 24 * TILE_SIZE + 5},
-    {2 * TILE_SIZE + 3, 24 * TILE_SIZE + 6, 2 * TILE_SIZE + 3, 24 * TILE_SIZE + 8},
-    {2 * TILE_SIZE + 2, 24 * TILE_SIZE + 9, 2 * TILE_SIZE + 2, 24 * TILE_SIZE + 9},
-    {2 * TILE_SIZE + 1, 25 * TILE_SIZE + 3, 0 * TILE_SIZE + 5, 25 * TILE_SIZE + 3},
-    {0 * TILE_SIZE + 4, 25 * TILE_SIZE + 4, 0 * TILE_SIZE + 4, 25 * TILE_SIZE + 4},
-    {0 * TILE_SIZE + 3, 25 * TILE_SIZE + 5, 0 * TILE_SIZE + 3, 30 * TILE_SIZE + 2},
-    {0 * TILE_SIZE + 4, 30 * TILE_SIZE + 3, 0 * TILE_SIZE + 4, 30 * TILE_SIZE + 3},
-    {0 * TILE_SIZE + 5, 30 * TILE_SIZE + 4, 14 * TILE_SIZE, 30 * TILE_SIZE + 4},
+    {5 * TILE_SIZE + 2, 16 * TILE_SIZE - 4, 5 * TILE_SIZE + 4, 16 * TILE_SIZE - 2},
+    {5 * TILE_SIZE + 4, 16 * TILE_SIZE - 2, 5 * TILE_SIZE + 4, 19 * TILE_SIZE + 1},
+    {5 * TILE_SIZE + 4, 19 * TILE_SIZE + 2, 5 * TILE_SIZE + 2, 19 * TILE_SIZE + 4},
+    {5 * TILE_SIZE + 2, 19 * TILE_SIZE + 4, 0 * TILE_SIZE + 6, 19 * TILE_SIZE + 4},
+    {0 * TILE_SIZE + 6, 19 * TILE_SIZE + 4, 0 * TILE_SIZE + 4, 19 * TILE_SIZE + 6},
+    {0 * TILE_SIZE + 4, 19 * TILE_SIZE + 6, 0 * TILE_SIZE + 4, 24 * TILE_SIZE + 2},
+    {0 * TILE_SIZE + 4, 24 * TILE_SIZE + 2, 0 * TILE_SIZE + 6, 24 * TILE_SIZE + 4},
+    {0 * TILE_SIZE + 6, 24 * TILE_SIZE + 4, 2 * TILE_SIZE + 2, 24 * TILE_SIZE + 4},
+    {2 * TILE_SIZE + 2, 24 * TILE_SIZE + 4, 2 * TILE_SIZE + 4, 24 * TILE_SIZE + 6},
+    {2 * TILE_SIZE + 4, 24 * TILE_SIZE + 6, 2 * TILE_SIZE + 4, 25 * TILE_SIZE + 2},
+    {2 * TILE_SIZE + 4, 25 * TILE_SIZE + 2, 2 * TILE_SIZE + 2, 25 * TILE_SIZE + 4},
+    {2 * TILE_SIZE + 2, 25 * TILE_SIZE + 4, 0 * TILE_SIZE + 6, 25 * TILE_SIZE + 4},
+    {0 * TILE_SIZE + 6, 25 * TILE_SIZE + 4, 0 * TILE_SIZE + 4, 25 * TILE_SIZE + 6},
+    {0 * TILE_SIZE + 4, 25 * TILE_SIZE + 6, 0 * TILE_SIZE + 4, 30 * TILE_SIZE + 2},
+    {0 * TILE_SIZE + 4, 30 * TILE_SIZE + 2, 0 * TILE_SIZE + 6, 30 * TILE_SIZE + 4},
+    {0 * TILE_SIZE + 6, 30 * TILE_SIZE + 4, 14 * TILE_SIZE, 30 * TILE_SIZE + 4},
 
     // L shape near bottom power pellet
-    {2 * TILE_SIZE + 6, 21 * TILE_SIZE + 4, 5 * TILE_SIZE + 1, 21 * TILE_SIZE + 4},
-    {5 * TILE_SIZE + 1, 21 * TILE_SIZE + 4, 5 * TILE_SIZE + 3, 21 * TILE_SIZE + 6},
-    {5 * TILE_SIZE + 3, 21 * TILE_SIZE + 6, 5 * TILE_SIZE + 3, 25 * TILE_SIZE + 1},
-    {5 * TILE_SIZE + 3, 25 * TILE_SIZE + 1, 5 * TILE_SIZE + 1, 25 * TILE_SIZE + 3},
-    {5 * TILE_SIZE + 1, 25 * TILE_SIZE + 3, 5 * TILE_SIZE - 1, 25 * TILE_SIZE + 3},
-    {5 * TILE_SIZE - 1, 25 * TILE_SIZE + 3, 5 * TILE_SIZE - 3, 25 * TILE_SIZE + 1},
-    {5 * TILE_SIZE - 3, 25 * TILE_SIZE + 1, 5 * TILE_SIZE - 3, 22 * TILE_SIZE + 5},
-    {5 * TILE_SIZE - 3, 22 * TILE_SIZE + 5, 5 * TILE_SIZE - 5, 22 * TILE_SIZE + 3},
-    {5 * TILE_SIZE - 5, 22 * TILE_SIZE + 3, 2 * TILE_SIZE + 6, 22 * TILE_SIZE + 3},
-    {2 * TILE_SIZE + 6, 22 * TILE_SIZE + 3, 2 * TILE_SIZE + 4, 22 * TILE_SIZE + 1},
-    {2 * TILE_SIZE + 4, 22 * TILE_SIZE + 1, 2 * TILE_SIZE + 4, 22 * TILE_SIZE - 1},
-    {2 * TILE_SIZE + 4, 22 * TILE_SIZE - 1, 2 * TILE_SIZE + 6, 21 * TILE_SIZE + 4},
+    {2 * TILE_SIZE + 6, 21 * TILE_SIZE + 4, 5 * TILE_SIZE + 2, 21 * TILE_SIZE + 4},
+    {5 * TILE_SIZE + 2, 21 * TILE_SIZE + 4, 5 * TILE_SIZE + 4, 21 * TILE_SIZE + 6},
+    {5 * TILE_SIZE + 4, 21 * TILE_SIZE + 6, 5 * TILE_SIZE + 4, 25 * TILE_SIZE + 2},
+    {5 * TILE_SIZE + 4, 25 * TILE_SIZE + 2, 5 * TILE_SIZE + 2, 25 * TILE_SIZE + 4},
+    {5 * TILE_SIZE + 2, 25 * TILE_SIZE + 4, 5 * TILE_SIZE - 2, 25 * TILE_SIZE + 4},
+    {5 * TILE_SIZE - 2, 25 * TILE_SIZE + 4, 5 * TILE_SIZE - 4, 25 * TILE_SIZE + 2},
+    {5 * TILE_SIZE - 4, 25 * TILE_SIZE + 2, 5 * TILE_SIZE - 4, 22 * TILE_SIZE + 6},
+    {5 * TILE_SIZE - 4, 22 * TILE_SIZE + 6, 5 * TILE_SIZE - 6, 22 * TILE_SIZE + 4},
+    {5 * TILE_SIZE - 6, 22 * TILE_SIZE + 4, 2 * TILE_SIZE + 6, 22 * TILE_SIZE + 4},
+    {2 * TILE_SIZE + 6, 22 * TILE_SIZE + 4, 2 * TILE_SIZE + 4, 22 * TILE_SIZE + 2},
+    {2 * TILE_SIZE + 4, 22 * TILE_SIZE + 2, 2 * TILE_SIZE + 4, 22 * TILE_SIZE - 2},
+    {2 * TILE_SIZE + 4, 22 * TILE_SIZE - 2, 2 * TILE_SIZE + 6, 21 * TILE_SIZE + 4},
 
     // Top T
-    {7 * TILE_SIZE + 4, 6 * TILE_SIZE + 6, 7 * TILE_SIZE + 4, 13 * TILE_SIZE + 1},
-    {7 * TILE_SIZE + 4, 13 * TILE_SIZE + 1, 7 * TILE_SIZE + 6, 13 * TILE_SIZE + 3},
-    {7 * TILE_SIZE + 6, 13 * TILE_SIZE + 3, 8 * TILE_SIZE, 13 * TILE_SIZE + 3},
-    {8 * TILE_SIZE + 1, 13 * TILE_SIZE + 3, 8 * TILE_SIZE + 3, 13 * TILE_SIZE + 1},
-    {8 * TILE_SIZE + 3, 13 * TILE_SIZE + 1, 8 * TILE_SIZE + 3, 10 * TILE_SIZE + 5},
-    {8 * TILE_SIZE + 3, 10 * TILE_SIZE + 5, 8 * TILE_SIZE + 5, 10 * TILE_SIZE + 3},
-    {8 * TILE_SIZE + 5, 10 * TILE_SIZE + 3, 11 * TILE_SIZE + 1, 10 * TILE_SIZE + 3},
-    {11 * TILE_SIZE + 1, 10 * TILE_SIZE + 3, 11 * TILE_SIZE + 3, 10 * TILE_SIZE + 1},
-    {11 * TILE_SIZE + 3, 10 * TILE_SIZE + 1, 11 * TILE_SIZE + 3, 10 * TILE_SIZE - 1},
-    {11 * TILE_SIZE + 3, 10 * TILE_SIZE - 1, 11 * TILE_SIZE + 1, 10 * TILE_SIZE - 3},
-    {11 * TILE_SIZE + 1, 10 * TILE_SIZE - 3, 8 * TILE_SIZE + 5, 10 * TILE_SIZE - 3},
-    {8 * TILE_SIZE + 5, 10 * TILE_SIZE - 3, 8 * TILE_SIZE + 3, 10 * TILE_SIZE - 5},
-    {8 * TILE_SIZE + 3, 10 * TILE_SIZE - 5, 8 * TILE_SIZE + 3, 6 * TILE_SIZE + 6},
-    {8 * TILE_SIZE + 3, 6 * TILE_SIZE + 6, 8 * TILE_SIZE + 1, 6 * TILE_SIZE + 4},
-    {8 * TILE_SIZE + 1, 6 * TILE_SIZE + 4, 8 * TILE_SIZE - 1, 6 * TILE_SIZE + 4},
-    {8 * TILE_SIZE - 1, 6 * TILE_SIZE + 4, 8 * TILE_SIZE - 3, 6 * TILE_SIZE + 6},
+    {7 * TILE_SIZE + 4, 6 * TILE_SIZE + 6, 7 * TILE_SIZE + 4, 13 * TILE_SIZE + 2},
+    {7 * TILE_SIZE + 4, 13 * TILE_SIZE + 2, 7 * TILE_SIZE + 6, 13 * TILE_SIZE + 4},
+    {7 * TILE_SIZE + 6, 13 * TILE_SIZE + 4, 8 * TILE_SIZE + 2, 13 * TILE_SIZE + 4},
+    {8 * TILE_SIZE + 2, 13 * TILE_SIZE + 4, 8 * TILE_SIZE + 4, 13 * TILE_SIZE + 2},
+    {8 * TILE_SIZE + 4, 13 * TILE_SIZE + 2, 8 * TILE_SIZE + 4, 10 * TILE_SIZE + 6},
+    {8 * TILE_SIZE + 4, 10 * TILE_SIZE + 6, 8 * TILE_SIZE + 6, 10 * TILE_SIZE + 4},
+    {8 * TILE_SIZE + 6, 10 * TILE_SIZE + 4, 11 * TILE_SIZE + 2, 10 * TILE_SIZE + 4},
+    {11 * TILE_SIZE + 2, 10 * TILE_SIZE + 4, 11 * TILE_SIZE + 4, 10 * TILE_SIZE + 2},
+    {11 * TILE_SIZE + 4, 10 * TILE_SIZE + 2, 11 * TILE_SIZE + 4, 10 * TILE_SIZE - 2},
+    {11 * TILE_SIZE + 4, 10 * TILE_SIZE - 2, 11 * TILE_SIZE + 2, 10 * TILE_SIZE - 4},
+    {11 * TILE_SIZE + 2, 10 * TILE_SIZE - 4, 8 * TILE_SIZE + 6, 10 * TILE_SIZE - 4},
+    {8 * TILE_SIZE + 6, 10 * TILE_SIZE - 4, 8 * TILE_SIZE + 4, 10 * TILE_SIZE - 6},
+    {8 * TILE_SIZE + 4, 10 * TILE_SIZE - 6, 8 * TILE_SIZE + 4, 6 * TILE_SIZE + 6},
+    {8 * TILE_SIZE + 4, 6 * TILE_SIZE + 6, 8 * TILE_SIZE + 2, 6 * TILE_SIZE + 4},
+    {8 * TILE_SIZE + 2, 6 * TILE_SIZE + 4, 8 * TILE_SIZE - 2, 6 * TILE_SIZE + 4},
+    {8 * TILE_SIZE - 2, 6 * TILE_SIZE + 4, 8 * TILE_SIZE - 4, 6 * TILE_SIZE + 6},
 
     // Weird bottom T
     {2 * TILE_SIZE + 6, 27 * TILE_SIZE + 4, 7 * TILE_SIZE + 2, 27 * TILE_SIZE + 4},
     {7 * TILE_SIZE + 2, 27 * TILE_SIZE + 4, 7 * TILE_SIZE + 4, 27 * TILE_SIZE + 2},
-    {7 * TILE_SIZE + 4, 27 * TILE_SIZE + 2, 7 * TILE_SIZE + 4, 25 * TILE_SIZE - 1},
-    {7 * TILE_SIZE + 4, 25 * TILE_SIZE - 1, 7 * TILE_SIZE + 6, 25 * TILE_SIZE - 3},
-    {7 * TILE_SIZE + 6, 25 * TILE_SIZE - 3, 7 * TILE_SIZE + 8, 25 * TILE_SIZE - 3},
-    {7 * TILE_SIZE + 8, 25 * TILE_SIZE - 3, 7 * TILE_SIZE + 10, 25 * TILE_SIZE - 1},
-    {7 * TILE_SIZE + 10, 25 * TILE_SIZE - 1, 7 * TILE_SIZE + 10, 27 * TILE_SIZE + 2},
-    {7 * TILE_SIZE + 10, 27 * TILE_SIZE + 2, 7 * TILE_SIZE + 12, 27 * TILE_SIZE + 4},
-    {7 * TILE_SIZE + 12, 27 * TILE_SIZE + 4, 11 * TILE_SIZE + 1, 27 * TILE_SIZE + 4},
-    {11 * TILE_SIZE + 1, 27 * TILE_SIZE + 4, 11 * TILE_SIZE + 3, 27 * TILE_SIZE + 6},
-    {11 * TILE_SIZE + 3, 27 * TILE_SIZE + 6, 11 * TILE_SIZE + 3, 27 * TILE_SIZE + 8},
-    {11 * TILE_SIZE + 3, 27 * TILE_SIZE + 8, 11 * TILE_SIZE + 1, 27 * TILE_SIZE + 10},
-    {11 * TILE_SIZE + 1, 27 * TILE_SIZE + 10, 2 * TILE_SIZE + 6, 27 * TILE_SIZE + 10},
-    {2 * TILE_SIZE + 6, 27 * TILE_SIZE + 10, 2 * TILE_SIZE + 4, 27 * TILE_SIZE + 8},
-    {2 * TILE_SIZE + 4, 27 * TILE_SIZE + 8, 2 * TILE_SIZE + 4, 27 * TILE_SIZE + 6},
+    {7 * TILE_SIZE + 4, 27 * TILE_SIZE + 2, 7 * TILE_SIZE + 4, 25 * TILE_SIZE - 2},
+    {7 * TILE_SIZE + 4, 25 * TILE_SIZE - 2, 7 * TILE_SIZE + 6, 25 * TILE_SIZE - 4},
+    {7 * TILE_SIZE + 6, 25 * TILE_SIZE - 4, 8 * TILE_SIZE + 2, 25 * TILE_SIZE - 4},
+    {8 * TILE_SIZE + 2, 25 * TILE_SIZE - 4, 8 * TILE_SIZE + 4, 25 * TILE_SIZE - 2},
+    {8 * TILE_SIZE + 4, 25 * TILE_SIZE - 2, 8 * TILE_SIZE + 4, 27 * TILE_SIZE + 2},
+    {8 * TILE_SIZE + 4, 27 * TILE_SIZE + 2, 8 * TILE_SIZE + 6, 27 * TILE_SIZE + 4},
+    {8 * TILE_SIZE + 6, 27 * TILE_SIZE + 4, 11 * TILE_SIZE + 2, 27 * TILE_SIZE + 4},
+    {11 * TILE_SIZE + 2, 27 * TILE_SIZE + 4, 11 * TILE_SIZE + 4, 27 * TILE_SIZE + 6},
+    {11 * TILE_SIZE + 4, 27 * TILE_SIZE + 6, 11 * TILE_SIZE + 4, 28 * TILE_SIZE + 2},
+    {11 * TILE_SIZE + 4, 28 * TILE_SIZE + 2, 11 * TILE_SIZE + 2, 28 * TILE_SIZE + 4},
+    {11 * TILE_SIZE + 2, 28 * TILE_SIZE + 4, 2 * TILE_SIZE + 6, 28 * TILE_SIZE + 4},
+    {2 * TILE_SIZE + 6, 28 * TILE_SIZE + 4, 2 * TILE_SIZE + 4, 28 * TILE_SIZE + 2},
+    {2 * TILE_SIZE + 4, 28 * TILE_SIZE + 2, 2 * TILE_SIZE + 4, 27 * TILE_SIZE + 6},
     {2 * TILE_SIZE + 4, 27 * TILE_SIZE + 6, 2 * TILE_SIZE + 6, 27 * TILE_SIZE + 4},
 
     // Bottom Misshapen T
@@ -171,24 +171,26 @@ inline void mirrorLines(const Line *leftLines, const int count, Line *mirroredLi
 inline void genHalfT(Line *lines, const Point upperRight) {
     int lineIndex = 0;
 
-    lines[lineIndex++] = (Line){upperRight.x, upperRight.y, upperRight.x - 3 * TILE_SIZE - 1, upperRight.y};
+    lines[lineIndex++] = (Line){upperRight.x, upperRight.y, upperRight.x - 3 * TILE_SIZE - 2, upperRight.y};
     lines[lineIndex++] = (Line){
-        upperRight.x - 3 * TILE_SIZE - 1, upperRight.y, upperRight.x - 3 * TILE_SIZE - 3, upperRight.y + 2
+        upperRight.x - 3 * TILE_SIZE - 2, upperRight.y, upperRight.x - 3 * TILE_SIZE - 4, upperRight.y + 2
     };
     lines[lineIndex++] = (Line){
-        upperRight.x - 3 * TILE_SIZE - 3, upperRight.y + 2, upperRight.x - 3 * TILE_SIZE - 3, upperRight.y + 4
+        upperRight.x - 3 * TILE_SIZE - 4, upperRight.y + 2, upperRight.x - 3 * TILE_SIZE - 4, upperRight.y + 6
     };
     lines[lineIndex++] = (Line){
-        upperRight.x - 3 * TILE_SIZE - 3, upperRight.y + 4, upperRight.x - 3 * TILE_SIZE - 1, upperRight.y + 6
+        upperRight.x - 3 * TILE_SIZE - 4, upperRight.y + 6, upperRight.x - 3 * TILE_SIZE - 2, upperRight.y + 8
     };
-    lines[lineIndex++] = (Line){upperRight.x - 3 * TILE_SIZE - 1, upperRight.y + 6, upperRight.x - 5, upperRight.y + 6};
-    lines[lineIndex++] = (Line){upperRight.x - 5, upperRight.y + 6, upperRight.x - 3, upperRight.y + 8};
-    lines[lineIndex++] = (Line){upperRight.x - 3, upperRight.y + 8, upperRight.x - 3, upperRight.y + 3 * TILE_SIZE + 4};
+    lines[lineIndex++] = (Line){upperRight.x - 3 * TILE_SIZE - 2, upperRight.y + 8, upperRight.x - 6, upperRight.y + 8};
+    lines[lineIndex++] = (Line){upperRight.x - 6, upperRight.y + 8, upperRight.x - 4, upperRight.y + 10};
     lines[lineIndex++] = (Line){
-        upperRight.x - 3, upperRight.y + 3 * TILE_SIZE + 4, upperRight.x - 1, upperRight.y + 3 * TILE_SIZE + 6
+        upperRight.x - 4, upperRight.y + 10, upperRight.x - 4, upperRight.y + 3 * TILE_SIZE + 6
+    };
+    lines[lineIndex++] = (Line){
+        upperRight.x - 4, upperRight.y + 3 * TILE_SIZE + 6, upperRight.x - 2, upperRight.y + 3 * TILE_SIZE + 8
     };
     lines[lineIndex] = (Line){
-        upperRight.x - 1, upperRight.y + 3 * TILE_SIZE + 6, upperRight.x, upperRight.y + 3 * TILE_SIZE + 6
+        upperRight.x - 2, upperRight.y + 3 * TILE_SIZE + 8, upperRight.x, upperRight.y + 3 * TILE_SIZE + 8
     };
 }
 
