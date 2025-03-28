@@ -36,3 +36,15 @@ add_executable(th_WSG test-harnesses/WSG/WSG.c)
 add_executable(th_WSG2 test-harnesses/WSG2/WSG2.c)
 add_executable(th_WSG3 test-harnesses/WSG3/WSG3.c)
 add_executable(wsg-slice sound-work/wsg-slice.c)
+add_executable(th_CoinDrop coindrop/coindrop.h
+        coindrop/coindrop.c)
+add_executable(th_IntroMusic intromusic/intromusic.h
+        intromusic/intromusic.c)
+add_executable(th_Intermission intermission/intermission.h
+        intermission/intermission.c)
+add_executable(th_SoundSystem sound_system/credit.h
+        sound_system/sound_manager.c
+        sound_system/sound_manager.h
+        sound_system/sound_system.c
+        sound_system/intermission.h
+        sound_system/intromusic.h)

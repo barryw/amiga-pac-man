@@ -6,6 +6,7 @@
  * @license GPL v. 3, see LICENSE for details.
  */
 
+#include <stdio.h>
 #include <clib/alib_protos.h>
 #include <clib/dos_protos.h>
 #include <clib/exec_protos.h>
@@ -20,13 +21,16 @@
 #include <graphics/gfx.h>
 #include <graphics/gfxbase.h>
 #include <hardware/custom.h>
+#include <hardware/dmabits.h>
 #include <hardware/intbits.h>
 #include <intuition/intuition.h>
+#include <intuition/screens.h>
+#include <proto/intuition.h>
 
 #include "../font.h"
 #include "../MazeBorders2.h"
 
-#define SCREEN_HEIGHT 250
+#define SCREEN_HEIGHT 288
 #define SCREEN_WIDTH 320
 
 struct GfxBase *GfxBase;
@@ -44,11 +48,19 @@ struct Task *task;
 struct Screen *sPacMan;
 struct Window *wPacMan;
 
+volatile UWORD __chip my_copper[] = {
+    0x8E, 0x2C, // DIWSTRT (Start display at line 44)
+    0x90, 0x2C + 288, // DIWSTOP (Stop at line 332)
+    0x100, 0x2204, // BPLCON0 (Enable interlace mode)
+    0xFFFF, 0xFFFE, // Wait forever
+};
+
+
 struct NewScreen nsPacMan = {
     .LeftEdge = 0, .TopEdge = 0,
     .Width = SCREEN_WIDTH, .Height = SCREEN_HEIGHT, .Depth = 4,
     .DetailPen = 3, .BlockPen = 0,
-    .ViewModes = 0,
+    .ViewModes = LACE,
     .Type = CUSTOMSCREEN | SCREENQUIET,
     .Font = NULL,
     .DefaultTitle = "PACMAN",
@@ -78,12 +90,32 @@ struct TextAttr taFont = {
     FPF_DESIGNED
 };
 
+// USHORT colorTable[16] =
+// {
+//     0x000, /* 0: Black */
+//     0xFF0, /* 1: Yellow */
+//     0xF00, /* 2: Light Red */
+//     0xFFF, /* 3: White */
+//     0x00C, /* 4: Light Blue */
+//     0xFBF, /* 5: Light Magenta */
+//     0x0FF, /* 6: Light Cyan */
+//     0x770, /* 7: Dark Yellow (pale orange?) */
+//     0x0F0, /* 8: Light Green */
+//     0xFA0, /* 9: Light Orange */
+//     0xFEF, /* A: Pinky white */
+//     0xFAA, /* B: Power Pellet */
+//     0x0FF, /* C: Light Cyan */
+//     0xF00, /* D: Light Red */
+//     0xF0F, /* E: Light Magenta */
+//     0xFFF, /* F: White */
+// };
+
 USHORT colorTable[16] =
 {
     0x000, /* 0: Black */
-    0xFF0, /* 1: Yellow */
-    0xF00, /* 2: Light Red */
-    0xFFF, /* 3: White */
+    0xFFF, /* 1: Yellow */
+    0x00C, /* 2: Light Red */
+    0xF00, /* 3: White */
     0x00C, /* 4: Light Blue */
     0xFBF, /* 5: Light Magenta */
     0x0FF, /* 6: Light Cyan */
@@ -98,45 +130,59 @@ USHORT colorTable[16] =
     0xFFF, /* F: White */
 };
 
-__chip UWORD bmPellet[] =
-{
+__chip UWORD sprite[] = {
     // Bitplane 0
-    0x0000,
-    0x3800,
-    0x7c00,
-    0xfe00,
-    0xfe00,
-    0xfe00,
-    0x7c00,
-    0x3800,
-
+    0x0000, 0x03C0, 0x0FF0, 0x1FF8,
+    0x3FFC, 0x3FFC, 0x0F3C, 0x4F3E,
+    0x7FFE, 0x7FFE, 0x7FFE, 0x7FFE,
+    0x7FFE, 0x7FFE, 0x6E76, 0x4662,
     // Bitplane 1
-    0x0000,
-    0x3800,
-    0x7c00,
-    0xfe00,
-    0xfe00,
-    0xfe00,
-    0x7c00,
-    0x3800,
-
-    // Bitplane 3
-    0x0000,
-    0x3800,
-    0x7c00,
-    0xfe00,
-    0xfe00,
-    0xfe00,
-    0x7c00,
-    0x3800,
+    0x0000, 0x03C0, 0x0FF0, 0x1FF8,
+    0x279C, 0x030C, 0x33CC, 0x73CE,
+    0x679E, 0x7FFE, 0x7FFE, 0x7FFE,
+    0x7FFE, 0x7FFE, 0x6E76, 0x4662,
 };
+
+
+// __chip UWORD bmPellet[] =
+// {
+//     // Bitplane 0
+//     0x0000,
+//     0x3800,
+//     0x7c00,
+//     0xfe00,
+//     0xfe00,
+//     0xfe00,
+//     0x7c00,
+//     0x3800,
+//
+//     // Bitplane 1
+//     0x0000,
+//     0x3800,
+//     0x7c00,
+//     0xfe00,
+//     0xfe00,
+//     0xfe00,
+//     0x7c00,
+//     0x3800,
+//
+//     // Bitplane 3
+//     0x0000,
+//     0x3800,
+//     0x7c00,
+//     0xfe00,
+//     0xfe00,
+//     0xfe00,
+//     0x7c00,
+//     0x3800,
+// };
 
 struct Image iPellet =
 {
     0, 0,
-    8, 8, 4,
-    bmPellet,
-    0x0B, 0x00
+    16, 16, 2,
+    sprite,
+    0x03, 0x00
 };
 
 #define BLINK_R 0xF
@@ -144,7 +190,7 @@ struct Image iPellet =
 #define BLINK_B 0xB
 #define BLINK_COLOR 0x0B
 
-void __amigainterrupt BlinkPowerPelletInterrupt() {
+void __amigainterrupt __saveds BlinkPowerPelletInterrupt() {
     if (!pauseBlink) {
         if (frame_count < 6) {
             frame_count++;
@@ -161,17 +207,19 @@ void __amigainterrupt BlinkPowerPelletInterrupt() {
         SetRGB4(&sPacMan->ViewPort, BLINK_COLOR, BLINK_R, BLINK_G, BLINK_B);
     }
     // Acknowledge the interrupt to avoid system lock-ups
-    custom.intreq = INTF_VERTB; // Clear VBL interrupt
+    custom.intreq = INTF_SETCLR | INTF_VERTB; // Properly acknowledge VBL interrupt
 }
 
 /* The Test Harness ******************************************************/
 
 int main() {
+    printf("Opening graphics lib\n");
     GfxBase = (struct GfxBase *) OpenLibrary("graphics.library", 0);
 
     if (!GfxBase)
         goto bye;
 
+    printf("Opening intuition\n");
     IntuitionBase = (struct IntuitionBase *) OpenLibrary("intuition.library", 0);
 
     if (!IntuitionBase)
@@ -203,16 +251,16 @@ int main() {
     // Set the drawing pen to a specific color(e.g., 2 = red, 1 = blue, etc.)
     SetAPen(rp, 0xa);
 
-    RectFill(rp, 0, 0, 28 * TILE_SIZE, 31 * TILE_SIZE);
-
-    SetAPen(rp, 0x00);
-
-    for (int x = 0; x < 28; x++) {
-        for (int y = 0; y < 31; y++) {
-            RectFill(rp, x * TILE_SIZE + 1, y * TILE_SIZE + 1, x * TILE_SIZE + TILE_SIZE - 1,
-                     y * TILE_SIZE + TILE_SIZE - 1);
-        }
-    }
+    // RectFill(rp, 0, 0, 28 * TILE_SIZE, 31 * TILE_SIZE);
+    //
+    // SetAPen(rp, 0x00);
+    //
+    // for (int x = 0; x < 28; x++) {
+    //     for (int y = 0; y < 31; y++) {
+    //         RectFill(rp, x * TILE_SIZE + 1, y * TILE_SIZE + 1, x * TILE_SIZE + TILE_SIZE - 1,
+    //                  y * TILE_SIZE + TILE_SIZE - 1);
+    //     }
+    // }
 
     WaitBOVP(ViewPortAddress(wPacMan));
     DrawMaze(rp);
@@ -231,7 +279,7 @@ int main() {
         vbint->is_Node.ln_Type = NT_INTERRUPT;
         vbint->is_Node.ln_Pri = -60;
         vbint->is_Node.ln_Name = "PowerPelletTask";
-        vbint->is_Code = &BlinkPowerPelletInterrupt;
+        vbint->is_Code = BlinkPowerPelletInterrupt;
 
         AddIntServer(INTB_VERTB, vbint);
     }

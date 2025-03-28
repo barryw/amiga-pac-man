@@ -4,7 +4,7 @@
 
 #ifndef HEADERHACK_H
 #define HEADERHACK_H
-
+#include <stddef.h>
 #endif //HEADERHACK_H
 
 #ifdef __CLION_IDE__
